@@ -42,13 +42,13 @@ Everything At Dawn Studio adds is in the [`studio/`](studio/) folder:
 The rest of this repository is an **unmodified copy of VDO.Ninja v30.2**. It ships here
 intentionally: the wrapper embeds VDO.Ninja and must be served from the **same domain**
 for the dashboard and guest pages to read live state from the video frames. None of
-VDO.Ninja's own source files are changed — you can update VDO.Ninja underneath the wrapper
+VDO.Ninja's own source files are changed, you can update VDO.Ninja underneath the wrapper
 at any time.
 
 ## Deploying
 
 This repo is served by GitHub Pages. To push updates, run `deploy.ps1` from the project
-folder — it commits, pushes, and keeps Pages enabled. See
+folder. It commits, pushes, and keeps Pages enabled. See
 [`studio/README.md`](studio/README.md#deploying) for details.
 
 ---
@@ -57,7 +57,7 @@ folder — it commits, pushes, and keeps Pages enabled. See
 
 At Dawn Studio is a wrapper around **[VDO.Ninja](https://vdo.ninja)**, created by
 **[Steve Seguin](https://github.com/steveseguin)**. All of the real-time peer-to-peer video
-technology — the hard part — is his work. This project only adds a show-production workflow
+technology, the hard part, is his work. This project only adds a show-production workflow
 on top of it.
 
 - Upstream project: **https://github.com/steveseguin/vdoninja**
