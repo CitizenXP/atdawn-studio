@@ -5,7 +5,7 @@ built on top of a self-hosted [VDO.Ninja](https://vdo.ninja).**
 
 At Dawn Studio wraps VDO.Ninja's peer-to-peer video engine in a purpose-built workflow for
 running live shows: guests join through one clean link, wait in a branded waiting room, get
-admitted to a green room, and are moved on air with a click — while the producer runs
+admitted to a green room, and are moved on air with a click, while the producer runs
 everything from a single dashboard.
 
 > **Live app:** https://jokeroker.github.io/atdawn-studio/studio/
