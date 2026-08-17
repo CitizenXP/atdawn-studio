@@ -255,6 +255,74 @@
 		padding: 10px 13px; border-radius: 9px; font-size: 0.87rem; cursor: pointer; font-family: inherit; font-weight: 500;
 	}
 	#popMenu button:hover { background: rgba(255, 255, 255, 0.08); }
+
+	/* ----- producer chat (drawer + launcher, available from every view) ----- */
+	#chatFab {
+		position: fixed; right: 22px; bottom: 22px; z-index: 190;
+		width: 54px; height: 54px; border-radius: 50%;
+		display: flex; align-items: center; justify-content: center;
+		background: var(--surface); border: 1px solid var(--line-strong);
+		color: var(--text); font-size: 1.35rem; cursor: pointer;
+		box-shadow: var(--shadow-2);
+		transition: transform 0.15s var(--ease), border-color 0.15s var(--ease);
+	}
+	#chatFab:hover { transform: translateY(-2px); border-color: rgba(246, 167, 92, 0.5); }
+	#chatFab.hidden { display: none; }
+	#chatFab .cnt {
+		position: absolute; top: -3px; right: -3px; min-width: 20px; height: 20px; padding: 0 5px;
+		border-radius: 10px; background: var(--accent); color: #1a1206;
+		font-size: 0.68rem; font-weight: 800; line-height: 20px; text-align: center;
+		display: none; animation: pulse 1.5s infinite;
+	}
+	#chatFab .cnt.show { display: block; }
+
+	#chatDrawer {
+		position: fixed; top: 0; right: 0; bottom: 0; width: 370px; max-width: 92vw; z-index: 200;
+		display: flex; flex-direction: column;
+		background: rgba(12, 16, 24, 0.96); backdrop-filter: blur(18px);
+		border-left: 1px solid var(--line-strong);
+		box-shadow: -22px 0 60px rgba(0, 0, 0, 0.5);
+		transform: translateX(102%); transition: transform 0.3s var(--ease);
+	}
+	#chatDrawer.open { transform: none; }
+	#chatDrawer .dHead { flex: none; display: flex; align-items: center; justify-content: space-between; padding: 16px 16px 12px 16px; }
+	#chatDrawer .dHead b { font-size: 0.98rem; }
+	#chatDrawer .dHead button { background: none; border: none; color: var(--text-dim); cursor: pointer; font-size: 1.2rem; line-height: 1; padding: 2px 4px; }
+	#chatDrawer .dHead button:hover { color: var(--text); }
+	#chatDrawer .dTabs { flex: none; display: flex; gap: 6px; padding: 0 12px 12px 12px; border-bottom: 1px solid var(--line); }
+	#chatDrawer .dTabs button {
+		flex: 1; display: flex; align-items: center; justify-content: center; gap: 7px;
+		height: 36px; border-radius: 9px; cursor: pointer; font-family: inherit;
+		background: rgba(255, 255, 255, 0.04); border: 1px solid var(--line);
+		color: var(--text-dim); font-size: 0.8rem; font-weight: 650;
+	}
+	#chatDrawer .dTabs button.active { background: rgba(255, 255, 255, 0.08); border-color: var(--line-strong); color: var(--text); }
+	#chatDrawer .dTabs .un {
+		min-width: 18px; height: 18px; padding: 0 5px; border-radius: 9px;
+		background: var(--accent); color: #1a1206; font-size: 0.65rem; font-weight: 800; line-height: 18px; display: none;
+	}
+	#chatDrawer .dTabs .un.show { display: inline-block; }
+	.chatLog { flex: 1; min-height: 0; overflow-y: auto; padding: 14px 16px; display: flex; flex-direction: column; gap: 11px; }
+	.chatLog.hidden { display: none; }
+	.chatLog .cEmpty { color: var(--text-faint); font-size: 0.83rem; line-height: 1.65; }
+	.cMsg { max-width: 94%; }
+	.cMsg .nm { font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 800; color: var(--text-faint); margin-bottom: 4px; }
+	.cMsg .bd {
+		background: rgba(255, 255, 255, 0.06); border: 1px solid var(--line);
+		padding: 8px 11px; border-radius: var(--r-sm); font-size: 0.87rem; line-height: 1.5; overflow-wrap: anywhere;
+	}
+	.cMsg.me { align-self: flex-end; }
+	.cMsg.me .nm { text-align: right; color: var(--accent); }
+	.cMsg.me .bd { background: var(--accent-soft); border-color: rgba(246, 167, 92, 0.4); }
+	#chatDrawer .dRow { flex: none; display: flex; gap: 8px; padding: 12px; border-top: 1px solid var(--line); }
+	#chatDrawer .dRow input {
+		flex: 1; min-width: 0; height: 40px; padding: 0 12px;
+		border-radius: var(--r-sm); border: 1px solid var(--line);
+		background: rgba(0, 0, 0, 0.32); color: var(--text); font-size: 0.9rem; font-family: inherit;
+	}
+	#chatDrawer .dRow input::placeholder { color: var(--text-faint); }
+	#chatDrawer .dRow input:focus { outline: none; border-color: rgba(246, 167, 92, 0.55); box-shadow: 0 0 0 3px rgba(246, 167, 92, 0.15); }
+	#chatDrawer .dNote { flex: none; padding: 0 14px 12px 14px; color: var(--text-faint); font-size: 0.72rem; line-height: 1.55; }
 </style>
 </head>
 <body>
@@ -500,6 +568,26 @@
 	</div>
 </div>
 
+<!-- ============ PRODUCER CHAT ============ -->
+<button id="chatFab" class="hidden" title="Guest chat"><i class="las la-comments"></i><span class="cnt" id="chatFabCnt">0</span></button>
+<div id="chatDrawer">
+	<div class="dHead">
+		<b><i class="las la-comments"></i> Guest chat</b>
+		<button id="chatDrawerClose" title="Close" aria-label="Close chat"><i class="las la-times"></i></button>
+	</div>
+	<div class="dTabs">
+		<button class="active" data-chatroom="green"><i class="las la-couch"></i> Green room <span class="un" id="unGreen">0</span></button>
+		<button data-chatroom="main"><i class="las la-broadcast-tower"></i> Broadcast <span class="un" id="unMain">0</span></button>
+	</div>
+	<div class="chatLog" id="chatLogGreen"><div class="cEmpty">Nothing yet. Messages guests type in the green room appear here — and what you send goes to everyone in that room as <b>Control Room</b>.</div></div>
+	<div class="chatLog hidden" id="chatLogMain"><div class="cEmpty">Nothing yet. Messages from guests on air appear here — and what you send goes to everyone in the broadcast room as <b>Control Room</b>.</div></div>
+	<div class="dRow">
+		<input type="text" id="chatDrawerText" maxlength="400" placeholder="Message this room…" autocomplete="off" />
+		<button class="btn sm primary" id="chatDrawerSend" title="Send"><i class="las la-paper-plane"></i></button>
+	</div>
+	<div class="dNote">Text only — the stream never sees this. For a big on-screen prompt use <b>Cue</b>; to talk out loud use <b>Talk</b>.</div>
+</div>
+
 <!-- hidden signaling engines: one persistent director connection per room.
      Everything on this page (cards, talkback, listen, transfers) drives these two frames. -->
 <div id="engineHold" aria-hidden="true">
@@ -562,6 +650,7 @@
 		loadEvent();
 		$("loginScreen").classList.add("hidden");
 		$("app").classList.remove("hidden");
+		$("chatFab").classList.remove("hidden");
 		renderEventInfo();
 		mountDirectors();
 		if (pollTimer) clearInterval(pollTimer);
@@ -964,6 +1053,115 @@
 		Studio.toast(secs > 0 ? "Countdown started on their screens" : "Timer cleared");
 	}
 	function roomGuests(room) { return room === "green" ? lastGreen : lastMain; }
+
+	/* ================= PRODUCER CHAT =================
+	   The director engines are off-screen, so chat has to be surfaced here or nobody
+	   sees it. Both frames post { chat: {msg,label,type,time} } for every message in
+	   either direction; we tag each one by which frame it came from and render it in
+	   that room's log. Sending calls the frame's own sendChatMessage() (same-origin),
+	   so it goes out as the director — i.e. to everyone in that room, labelled
+	   "Control Room". Cues use sendDirectorChat instead and never echo here, so the
+	   log stays a real conversation rather than a copy of every prompt you fire. */
+	let chatRoom = "green", chatOpen = false;
+	const chatUnread = { green: 0, main: 0 };
+
+	function chatLog(room) { return $(room === "green" ? "chatLogGreen" : "chatLogMain"); }
+
+	function addChatLine(room, text, who, mine) {
+		const log = chatLog(room);
+		const empty = log.querySelector(".cEmpty");
+		if (empty) empty.remove();
+		const el = document.createElement("div");
+		el.className = "cMsg" + (mine ? " me" : "");
+		const nm = document.createElement("div");
+		nm.className = "nm";
+		nm.textContent = who;
+		const bd = document.createElement("div");
+		bd.className = "bd";
+		bd.textContent = text;
+		el.appendChild(nm); el.appendChild(bd);
+		log.appendChild(el);
+		log.scrollTop = log.scrollHeight;
+		if (!mine && !(chatOpen && chatRoom === room)) {
+			chatUnread[room]++;
+			renderChatBadges();
+		}
+	}
+
+	function renderChatBadges() {
+		[["green", "unGreen"], ["main", "unMain"]].forEach(([room, id]) => {
+			const el = $(id);
+			el.textContent = chatUnread[room];
+			el.classList.toggle("show", chatUnread[room] > 0);
+		});
+		const total = chatUnread.green + chatUnread.main;
+		const cnt = $("chatFabCnt");
+		cnt.textContent = total;
+		cnt.classList.toggle("show", total > 0);
+	}
+
+	function setChatRoom(room) {
+		chatRoom = room;
+		document.querySelectorAll("[data-chatroom]").forEach(b => b.classList.toggle("active", b.dataset.chatroom === room));
+		$("chatLogGreen").classList.toggle("hidden", room !== "green");
+		$("chatLogMain").classList.toggle("hidden", room !== "main");
+		$("chatDrawerText").placeholder = "Message " + (room === "green" ? "the green room" : "everyone on air") + "…";
+		if (chatOpen) {
+			chatUnread[room] = 0;
+			renderChatBadges();
+			const log = chatLog(room);
+			log.scrollTop = log.scrollHeight;
+		}
+	}
+
+	function setChatOpen(open) {
+		chatOpen = open;
+		$("chatDrawer").classList.toggle("open", open);
+		if (open) {
+			chatUnread[chatRoom] = 0;
+			renderChatBadges();
+			chatLog(chatRoom).scrollTop = chatLog(chatRoom).scrollHeight;
+			setTimeout(() => $("chatDrawerText").focus(), 320);
+		}
+	}
+
+	function sendRoomChat() {
+		const input = $("chatDrawerText");
+		const text = input.value.trim();
+		if (!text) return;
+		try {
+			const w = frameOf(chatRoom).contentWindow;
+			if (!w || typeof w.sendChatMessage !== "function") throw new Error("not ready");
+			w.sendChatMessage(text); // echoes back to us as { chat: { type: "sent" } }
+			input.value = "";
+		} catch (e) {
+			Studio.toast("That room isn't connected yet", true);
+		}
+	}
+
+	window.addEventListener("message", e => {
+		const d = e.data;
+		if (!d || !d.chat || !d.chat.msg) return;
+		let room = null;
+		try {
+			if (e.source === $("dirGreen").contentWindow) room = "green";
+			else if (e.source === $("dirMain").contentWindow) room = "main";
+		} catch (err) { return; }
+		if (!room) return;
+		const text = String(d.chat.msg).replace(/<[^>]*>/g, "").trim();
+		if (!text) return;
+		const mine = d.chat.type === "sent";
+		const who = mine ? "You · Control Room"
+			: (String(d.chat.label || "").replace(/<[^>]*>/g, "").replace(/:\s*$/, "").trim() || "Guest");
+		addChatLine(room, text, who, mine);
+	});
+
+	$("chatFab").addEventListener("click", () => setChatOpen(!chatOpen));
+	$("chatDrawerClose").addEventListener("click", () => setChatOpen(false));
+	$("chatDrawerSend").addEventListener("click", sendRoomChat);
+	$("chatDrawerText").addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); sendRoomChat(); } });
+	document.querySelectorAll("[data-chatroom]").forEach(b => b.addEventListener("click", () => setChatRoom(b.dataset.chatroom)));
+	setChatRoom("green");
 
 	/* ================= POPOVER MENU ================= */
 	function showMenu(anchor, items) {

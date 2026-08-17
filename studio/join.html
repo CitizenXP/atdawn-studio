@@ -95,13 +95,17 @@
 		backdrop-filter: blur(16px);
 		box-shadow: var(--shadow-2);
 		z-index: 50;
+		transition: transform 0.32s var(--ease);
 	}
+	/* slide the dock clear of the chat drawer instead of letting it sit underneath */
+	#controls.chatShift { transform: translateX(calc(-50% - 165px)); }
 	.ctl {
 		display: flex; flex-direction: column; align-items: center; gap: 4px;
 		background: none; border: none; cursor: pointer; color: var(--text);
 		padding: 0; width: 62px; font-family: inherit;
 	}
 	.ctl .bubble {
+		position: relative;
 		width: 46px; height: 46px; border-radius: 50%;
 		display: flex; align-items: center; justify-content: center;
 		background: rgba(255, 255, 255, 0.07);
@@ -130,7 +134,61 @@
 		font-size: 3rem; font-weight: 800; letter-spacing: 0.08em;
 		color: #fff; text-shadow: 0 4px 40px rgba(0, 0, 0, 0.65);
 	}
+	/* ----- chat drawer (our own — VDO's chat panel stays hidden) ----- */
+	#chatPanel {
+		position: absolute; top: 0; right: 0; bottom: 0; width: 330px; max-width: 88vw;
+		display: flex; flex-direction: column; z-index: 55;
+		background: rgba(10, 13, 20, 0.93);
+		backdrop-filter: blur(16px);
+		border-left: 1px solid var(--line-strong);
+		box-shadow: -18px 0 50px rgba(0, 0, 0, 0.45);
+		transform: translateX(102%);
+		transition: transform 0.32s var(--ease);
+	}
+	#chatPanel.open { transform: none; }
+	.chatHead {
+		flex: none; display: flex; align-items: center; justify-content: space-between;
+		padding: 15px 16px; border-bottom: 1px solid var(--line); font-size: 0.92rem;
+	}
+	.chatHead .who { color: var(--text-dim); font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; font-weight: 700; }
+	.chatHead button { background: none; border: none; color: var(--text-dim); cursor: pointer; font-size: 1.15rem; line-height: 1; padding: 2px 4px; }
+	.chatHead button:hover { color: var(--text); }
+	#chatLog { flex: 1; min-height: 0; overflow-y: auto; padding: 14px 16px; display: flex; flex-direction: column; gap: 11px; }
+	#chatEmpty { color: var(--text-faint); font-size: 0.82rem; line-height: 1.65; }
+	.msg { max-width: 94%; }
+	.msg .nm { font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 800; color: var(--text-faint); margin-bottom: 4px; }
+	.msg .bd {
+		background: rgba(255, 255, 255, 0.06); border: 1px solid var(--line);
+		padding: 8px 11px; border-radius: var(--r-sm);
+		font-size: 0.87rem; line-height: 1.5; overflow-wrap: anywhere;
+	}
+	.msg.me { align-self: flex-end; }
+	.msg.me .nm { text-align: right; color: var(--accent); }
+	.msg.me .bd { background: var(--accent-soft); border-color: rgba(246, 167, 92, 0.4); }
+	.msg.dir .nm { color: var(--accent); }
+	.msg.dir .bd { border-color: rgba(246, 167, 92, 0.35); background: rgba(246, 167, 92, 0.07); }
+	.msg.sys { align-self: center; max-width: 100%; }
+	.msg.sys .nm { display: none; }
+	.msg.sys .bd { background: none; border: none; padding: 2px 0; text-align: center; font-size: 0.76rem; color: var(--text-faint); }
+	.chatRow { flex: none; display: flex; gap: 8px; padding: 12px; border-top: 1px solid var(--line); }
+	.chatRow input {
+		flex: 1; min-width: 0; height: 40px; padding: 0 12px;
+		border-radius: var(--r-sm); border: 1px solid var(--line);
+		background: rgba(0, 0, 0, 0.32); color: var(--text);
+		font-size: 0.9rem; font-family: inherit;
+	}
+	.chatRow input::placeholder { color: var(--text-faint); }
+	.chatRow input:focus { outline: none; border-color: rgba(246, 167, 92, 0.55); box-shadow: 0 0 0 3px rgba(246, 167, 92, 0.15); }
+	#chatDot {
+		position: absolute; top: -1px; right: -1px; width: 12px; height: 12px;
+		border-radius: 50%; background: var(--accent); border: 2px solid #0d1119;
+		display: none; animation: pulse 1.5s infinite;
+	}
+	#chatDot.show { display: block; }
+
 	@media (max-width: 620px) {
+		#chatPanel { width: 100%; max-width: 100%; }
+		#controls.chatShift { transform: translateX(-50%); } /* drawer is full-width here — nowhere to shift to */
 		#controls { gap: 2px; padding: 8px 10px; bottom: 12px; }
 		.ctl { width: 52px; }
 		.ctl .bubble { width: 42px; height: 42px; }
@@ -186,6 +244,18 @@
 		<div id="cueBanner"><span class="from" id="cueFrom"></span><span id="cueText"></span></div>
 		<div id="cueTimer"><div class="t" id="cueTimerVal">0:00</div><div class="lbl">time left</div></div>
 
+		<div id="chatPanel">
+			<div class="chatHead">
+				<span><i class="las la-comment"></i> Chat &nbsp;<span class="who" id="chatScope"></span></span>
+				<button id="chatClose" title="Close chat" aria-label="Close chat"><i class="las la-times"></i></button>
+			</div>
+			<div id="chatLog"><div id="chatEmpty">No messages yet. Say hello — the show team is watching this too.</div></div>
+			<div class="chatRow">
+				<input type="text" id="chatText" maxlength="400" placeholder="Type a message…" autocomplete="off" />
+				<button class="btn sm primary" id="chatSend" title="Send"><i class="las la-paper-plane"></i></button>
+			</div>
+		</div>
+
 		<div id="controls">
 			<button class="ctl" id="micBtn" title="Mute / unmute your microphone">
 				<span class="bubble"><i class="las la-microphone"></i></span><span class="lbl">MIC</span>
@@ -200,7 +270,7 @@
 				<span class="bubble"><i class="las la-hand-paper"></i></span><span class="lbl">HAND</span>
 			</button>
 			<button class="ctl" id="chatBtn" title="Open chat">
-				<span class="bubble"><i class="las la-comment"></i></span><span class="lbl">CHAT</span>
+				<span class="bubble"><i class="las la-comment"></i><span id="chatDot"></span></span><span class="lbl">CHAT</span>
 			</button>
 			<button class="ctl" id="setBtn" title="Camera & microphone settings">
 				<span class="bubble"><i class="las la-cog"></i></span><span class="lbl">SETTINGS</span>
@@ -398,6 +468,11 @@
 		if (o.ts) params.transcribe = null;    // speech-to-text captions into the room
 		iframe.src = Studio.buildUrl(Studio.vdoBase(), params);
 
+		$("chatScope").textContent = o.dc ? "· show team only" : "· everyone in the room";
+		$("chatEmpty").textContent = o.dc
+			? "No messages yet. Anything you send here goes privately to the show team."
+			: "No messages yet. Say hello — the show team is watching this too.";
+
 		$("lobby").classList.add("hidden");
 		$("call").classList.remove("hidden");
 		setPill("waiting", "CONNECTING", "Choose your camera & mic, then press START");
@@ -410,6 +485,8 @@
 	// never seen — their director streams all use "dir_"-prefixed stream IDs.
 	// #overlayMsgs is VDO's own raw white chat/cue text — we render cues as our own
 	// styled banner from the gotChat event, so suppress VDO's copy to avoid doubles.
+	// #chatModule is VDO's chat window; we drive the same engine from our own drawer
+	// (see CHAT below), so it stays hidden.
 	//
 	// VDO's tally puts a permanent green inset box-shadow on #main (.onair). We keep the
 	// "you're on stage" signal but make it a brief flash instead of a constant frame:
@@ -423,7 +500,7 @@
 	// their status from our own top bar and these hold no video tiles, so hiding them
 	// removes the last trace of the producer from the guest's screen.
 	const CHROME_HIDE_CSS =
-		"#controlButtons, #header, #translateButton, #reportbutton, #overlayMsgs, #userList, #connectUsers { display: none !important; }" +
+		"#controlButtons, #header, #translateButton, #reportbutton, #overlayMsgs, #userList, #connectUsers, #chatModule { display: none !important; }" +
 		' [data-sid^="dir_"], .container_holder_video:has(video[data-sid^="dir_"]) { display: none !important; }' +
 		" #main.onair { box-shadow: none !important; animation: adOnAirFlash 2.8s ease-out 1 !important; }" +
 		" @keyframes adOnAirFlash { 0%,55% { box-shadow: inset 0 0 max(10vw,10vh) green; } 100% { box-shadow: inset 0 0 0 rgba(0,128,0,0); } }";
@@ -515,15 +592,86 @@
 		if (d.action === "hand") { handUp = !!d.value; renderToggles(); } // director lowered/raised our hand
 		if (d.action === "hungup" && started) applyState("left");
 
-		// chat from the control room → cue banner / timer (guests never need to open a chat window)
-		if (d.gotChat && d.gotChat.msg) {
-			const raw = String(d.gotChat.msg).replace(/<[^>]*>/g, "").trim();
-			const from = d.gotChat.label ? String(d.gotChat.label).replace(/<[^>]*>/g, "") : "";
+		// Chat traffic. VDO posts { chat: data } for both directions (and a legacy
+		// `gotChat` copy on inbound only). Producer cues arrive on the same channel, so
+		// route by prefix: "📣"/"⏱ TIMER" are control-room cues → big banner + chime,
+		// everything else is a real conversation → the chat drawer.
+		const c = d.chat || d.gotChat;
+		if (c && c.msg) {
+			const raw = String(c.msg).replace(/<[^>]*>/g, "").trim();
+			const rawLabel = c.label ? String(c.label) : "";
+			const from = rawLabel.replace(/<[^>]*>/g, "").replace(/:\s*$/, "").trim();
+			const mine = c.type === "sent";
 			const timerMatch = raw.match(/^⏱ TIMER (\d+)/);
-			if (timerMatch) startCueTimer(parseInt(timerMatch[1], 10));
-			else if (raw) showCue(raw.replace(/^📣\s*/, ""), from);
+			if (!mine && timerMatch) startCueTimer(parseInt(timerMatch[1], 10));
+			else if (!mine && /^📣/.test(raw)) showCue(raw.replace(/^📣\s*/, ""), from);
+			// VDO pushes its own local notices ("You've been transferred…") down the chat
+			// channel with no sender. Real people always carry a label, so an empty one
+			// means it's a system line — render it as one instead of faking an author.
+			else if (!mine && !from) addChatSys(raw);
+			else if (raw) addChatMsg(raw, mine ? "You" : from, mine, /chat_director/.test(rawLabel));
 		}
 	});
+
+	/* ---------- chat drawer ----------
+	   We drive VDO's own chat engine (same-origin sendChatMessage, so the producer's
+	   "Private chat" setting is honoured — messages go only to the control room when it's
+	   on) but render every message ourselves so it matches the rest of the guest UI. */
+	let chatOpen = false, chatUnread = 0;
+	function pushChat(text, who, cls) {
+		const empty = $("chatEmpty");
+		if (empty) empty.remove();
+		const log = $("chatLog");
+		const el = document.createElement("div");
+		el.className = "msg" + cls;
+		const nm = document.createElement("div");
+		nm.className = "nm";
+		nm.textContent = who;
+		const bd = document.createElement("div");
+		bd.className = "bd";
+		bd.textContent = text;
+		el.appendChild(nm); el.appendChild(bd);
+		log.appendChild(el);
+		log.scrollTop = log.scrollHeight;
+	}
+	function addChatMsg(text, who, mine, fromDirector) {
+		pushChat(text, who, (mine ? " me" : "") + (fromDirector ? " dir" : ""));
+		if (!mine && !chatOpen) {
+			chatUnread++;
+			$("chatDot").classList.add("show");
+			chime(700, 0.09, 880);
+		}
+	}
+	function addChatSys(text) { pushChat(text, "", " sys"); } // no badge, no chime — it isn't a message
+	function setChatOpen(open) {
+		chatOpen = open;
+		$("chatPanel").classList.toggle("open", open);
+		$("chatBtn").classList.toggle("on", open);
+		$("controls").classList.toggle("chatShift", open);
+		if (open) {
+			chatUnread = 0;
+			$("chatDot").classList.remove("show");
+			$("chatLog").scrollTop = $("chatLog").scrollHeight;
+			setTimeout(() => $("chatText").focus(), 340);
+		}
+	}
+	function sendChatText() {
+		const input = $("chatText");
+		const text = input.value.trim();
+		if (!text) return;
+		try {
+			const w = iframe.contentWindow;
+			if (!w || typeof w.sendChatMessage !== "function") throw new Error("not ready");
+			w.sendChatMessage(text); // echoes back to us as { chat: { type: "sent" } }
+			input.value = "";
+		} catch (e) {
+			Studio.toast("Chat isn't connected yet — try again in a moment", true);
+		}
+	}
+	$("chatBtn").addEventListener("click", () => setChatOpen(!chatOpen));
+	$("chatClose").addEventListener("click", () => setChatOpen(false));
+	$("chatSend").addEventListener("click", sendChatText);
+	$("chatText").addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); sendChatText(); } });
 
 	/* ---------- controls ---------- */
 	function setIcon(btnId, cls) {
@@ -539,7 +687,6 @@
 	}
 	$("micBtn").addEventListener("click", () => Studio.send(iframe, { mic: "toggle" }));
 	$("camBtn").addEventListener("click", () => Studio.send(iframe, { camera: "toggle" }));
-	$("chatBtn").addEventListener("click", () => Studio.send(iframe, { function: "toggleChat" }));
 	$("setBtn").addEventListener("click", () => Studio.send(iframe, { toggleSettings: true }));
 	$("handBtn").addEventListener("click", () => {
 		Studio.send(iframe, { action: "togglehand" });

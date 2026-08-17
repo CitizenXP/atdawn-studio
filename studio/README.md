@@ -67,9 +67,16 @@ OBS scene** — the stream cannot hear or see any of this:
   if a live guest replies out loud, the stream hears *them*).
 - **🎧 Whisper** (per guest): IFB-style — only that one guest hears you, even mid-show.
   Automatically turns off any other whisper/room-talk in that room.
+- **💬 Chat** (the round button, bottom-right of the control room): a proper text
+  conversation with your guests, with a tab per room and an unread counter so you can
+  keep it closed until something arrives. What you type goes to everyone in the selected
+  room, signed **Control Room**; what guests type shows up here with their name. Use it
+  for anything that isn't urgent enough to interrupt them — links, spellings of names,
+  "your mic gain is a bit hot". Cues and timers stay out of this log, so it reads as a
+  real conversation rather than a record of every prompt you fired.
 - **📣 Cue** (per guest or per room): canned or custom messages that appear as a large
   banner on the guest's screen for ~9 seconds, with a soft chime. Guests never need to
-  open a chat window.
+  open the chat window to get these.
 - **⏱ Timer** (per room): a countdown appears on every guest's screen; goes red and
   pulses in the last 15 seconds. "Clear timer" removes it.
 - **🔇 Mute all / 🔊 Unmute** (per room): panic button for the broadcast, or quiet the
@@ -78,10 +85,16 @@ OBS scene** — the stream cannot hear or see any of this:
 ## Guest tools
 
 Guests get: mic, camera, **background blur**, **✋ raise hand** (shows instantly on your
-guest board with an amber highlight), chat, settings (device switching), leave. When they
-go on air they get a persistent red **ON AIR** pill in the top bar plus a brief green
+guest board with an amber highlight), **chat**, settings (device switching), leave. When
+they go on air they get a persistent red **ON AIR** pill in the top bar plus a brief green
 border **flash** (it pulses when they go live, then fades — it doesn't frame the whole
 call the entire time). Cues from the control room appear as a single styled banner.
+
+**CHAT** slides out a panel on the right: everyone in their room plus the control room,
+with a dot on the button when something arrives while it's closed. Messages from you are
+marked **Control Room**. Turn on *Private chat* in Settings and guests' messages go only
+to producers — the panel says so, so nobody types something awkward assuming privacy that
+isn't there.
 
 ## Guest Links — permanent, preloadable links (Guest Links tab)
 
