@@ -92,6 +92,16 @@ video so it covers nobody's face, plus a brief green
 border **flash** (it pulses when they go live, then fades, so it doesn't frame the whole
 call the entire time). Cues from the control room appear as a single styled banner.
 
+Guests see the call and our own controls, nothing else. VDO.Ninja's engineer-facing
+chrome is suppressed for them: the small expand icon it floats over each tile, and the
+right-click menu on video (mirror, rotate, PTZ, buffer size, remote hangup/reload,
+picture-in-picture). That menu is built for whoever runs the show from a browser tab, not
+for guests, and several of its entries can't work inside our wrapper anyway. Right-click
+on the call is simply inert. None of this touches VDO.Ninja's own files: the icon is hidden
+with the same injected CSS as the rest, and the menu is cancelled by a capture-phase
+listener on the embedded document. Producers who need those controls still have them, in
+the full director console behind **Advanced** on either room tab.
+
 **CHAT** slides out a panel on the right: everyone in their room plus the control room,
 with a dot on the button when something arrives while it's closed. Messages from you are
 marked **Control Room**. Turn on *Private chat* in Settings and guests' messages go only

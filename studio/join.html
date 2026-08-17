@@ -521,15 +521,42 @@
 	// "Not Visible · Control Room" chip when the producer talks (audio-only). Guests get
 	// their status from our own top bar and these hold no video tiles, so hiding them
 	// removes the last trace of the producer from the guest's screen.
+	// .fullwindowButton is the small expand icon VDO floats over the top-right corner of
+	// every tile once there's more than one video. It spotlights that person, but it reads
+	// as a stray fullscreen control and gets in the way of watching the call.
 	const CHROME_HIDE_CSS =
-		"#controlButtons, #header, #translateButton, #reportbutton, #overlayMsgs, #userList, #connectUsers, #chatModule, #obsState { display: none !important; }" +
+		"#controlButtons, #header, #translateButton, #reportbutton, #overlayMsgs, #userList, #connectUsers, #chatModule, #obsState, .fullwindowButton { display: none !important; }" +
 		' [data-sid^="dir_"], .container_holder_video:has(video[data-sid^="dir_"]) { display: none !important; }' +
 		" #main.onair { box-shadow: none !important; animation: adOnAirFlash 2.8s ease-out 1 !important; }" +
 		" @keyframes adOnAirFlash { 0%,55% { box-shadow: inset 0 0 max(10vw,10vh) green; } 100% { box-shadow: inset 0 0 0 rgba(0,128,0,0); } }";
 	iframe.addEventListener("load", () => {
 		if (!iframe.src) return;
-		setTimeout(() => { Studio.send(iframe, { style: CHROME_HIDE_CSS }); watchForDirectorTiles(); }, 800);
+		setTimeout(() => { Studio.send(iframe, { style: CHROME_HIDE_CSS }); watchForDirectorTiles(); blockVideoMenu(); }, 800);
 	});
+
+	/* ---------- kill VDO's right-click video menu for guests ----------
+	   VDO builds an engineer's menu on every video (mirror, rotate, PTZ, buffer, remote
+	   hangup/reload, picture-in-picture...). It's aimed at whoever is running the show in
+	   a browser tab, not at a guest, and several entries can't work from inside our iframe
+	   or are gated on permission the guest doesn't have. Rather than curate a menu we don't
+	   own, we cancel the event before VDO's own handler sees it.
+
+	   VDO listens on document in the bubble phase, so a capture-phase listener on the same
+	   document runs first and stopPropagation() there means the event never reaches it.
+	   preventDefault() also drops the browser's native video menu, so right-click on the
+	   call is simply inert, the way it is in every other video-call app. Our chat box lives
+	   in the parent page, so right-click and paste still work there. */
+	function blockVideoMenu() {
+		try {
+			const w = iframe.contentWindow;
+			if (!w || w.__adMenuBlocked) return;
+			w.document.addEventListener("contextmenu", e => {
+				e.preventDefault();
+				e.stopPropagation();
+			}, true); // capture: beats VDO's bubble-phase listener on the same document
+			w.__adMenuBlocked = true;
+		} catch (e) {}
+	}
 
 	/* ---------- keep the producer's talkback out of the guest's group view ----------
 	   Talk (press2talk) publishes an audio-only director stream; VDO would otherwise show
@@ -579,6 +606,7 @@
 		try { s = iframe.contentWindow && iframe.contentWindow.session; } catch (e) { return; } // cross-origin: rely on events only
 		if (!s) return;
 		neutralizeDirectorTiles(); // fallback in case the observer missed the tile's creation
+		blockVideoMenu();          // no-op once bound; covers a late or re-navigated frame
 		try {
 			// VDO shows its own "please wait" popup in hold mode, and our overlay covers that
 			const am = iframe.contentWindow.document.getElementById("alertModal");
