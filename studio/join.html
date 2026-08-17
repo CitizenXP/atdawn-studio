@@ -29,11 +29,15 @@
 		background: rgba(10, 13, 20, 0.75);
 		backdrop-filter: blur(14px);
 		border-bottom: 1px solid var(--line);
-		flex: none; z-index: 40;
+		flex: none; z-index: 40; position: relative;
 	}
 	#topbar .brandmark { font-size: 0.9rem; }
 	#topbar .spacer { flex: 1; }
 	#statusMsg { color: var(--text-dim); font-size: 0.84rem; }
+	/* status sits dead-centre of the top bar: it's the one thing a guest should never
+	   have to hunt for, and the bar is above the video so it covers nobody's face. */
+	#statusPill { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); }
+	#statusPill.live { box-shadow: 0 0 22px rgba(255, 87, 87, 0.3); }
 	#stage { flex: 1; position: relative; min-height: 0; background: #000; }
 	#stage iframe { position: absolute; inset: 0; width: 100%; height: 100%; }
 
@@ -69,18 +73,23 @@
 		pointer-events: none;
 	}
 	#cueBanner.show { transform: translate(-50%, 0); opacity: 1; }
+	/* a running countdown owns the top-centre slot, so cues drop below it */
+	#stage.timerOn #cueBanner.show { transform: translate(-50%, 52px); }
 	#cueBanner .from { display: block; font-size: 0.64rem; letter-spacing: 0.14em; color: var(--accent); margin-bottom: 4px; text-transform: uppercase; font-weight: 800; }
+	/* Top-centre, and deliberately compact: the old top-right box sat underneath the
+	   chat drawer, and anything taller starts covering the faces on the call. */
 	#cueTimer {
-		position: absolute; top: 18px; right: 18px; z-index: 60;
-		background: rgba(10, 13, 20, 0.82);
+		position: absolute; top: 14px; left: 50%; transform: translateX(-50%); z-index: 60;
+		display: none; align-items: center; gap: 11px;
+		background: rgba(10, 13, 20, 0.86);
 		border: 1px solid var(--line-strong);
-		border-radius: var(--r-md); padding: 10px 20px; text-align: center;
-		display: none; backdrop-filter: blur(10px);
+		border-radius: 999px; padding: 7px 18px;
+		backdrop-filter: blur(10px);
 		box-shadow: var(--shadow-1);
 	}
-	#cueTimer.show { display: block; }
-	#cueTimer .t { font-size: 1.75rem; font-weight: 800; font-variant-numeric: tabular-nums; letter-spacing: 0.02em; }
-	#cueTimer .lbl { font-size: 0.6rem; letter-spacing: 0.14em; color: var(--text-faint); text-transform: uppercase; font-weight: 700; }
+	#cueTimer.show { display: flex; }
+	#cueTimer .t { font-size: 1.15rem; font-weight: 800; font-variant-numeric: tabular-nums; letter-spacing: 0.02em; line-height: 1; }
+	#cueTimer .lbl { font-size: 0.58rem; letter-spacing: 0.14em; color: var(--text-faint); text-transform: uppercase; font-weight: 700; line-height: 1; }
 	#cueTimer.urgent { border-color: rgba(255, 87, 87, 0.6); }
 	#cueTimer.urgent .t { color: #ff8383; animation: pulse 1s infinite; }
 
@@ -134,7 +143,7 @@
 		font-size: 3rem; font-weight: 800; letter-spacing: 0.08em;
 		color: #fff; text-shadow: 0 4px 40px rgba(0, 0, 0, 0.65);
 	}
-	/* ----- chat drawer (our own — VDO's chat panel stays hidden) ----- */
+	/* ----- chat drawer (our own, VDO's chat panel stays hidden) ----- */
 	#chatPanel {
 		position: absolute; top: 0; right: 0; bottom: 0; width: 330px; max-width: 88vw;
 		display: flex; flex-direction: column; z-index: 55;
@@ -186,15 +195,17 @@
 	}
 	#chatDot.show { display: block; }
 
+	/* the helper text would run into the centred status pill long before this gets tight */
+	@media (max-width: 900px) { #statusMsg { display: none; } }
 	@media (max-width: 620px) {
 		#chatPanel { width: 100%; max-width: 100%; }
-		#controls.chatShift { transform: translateX(-50%); } /* drawer is full-width here — nowhere to shift to */
+		#controls.chatShift { transform: translateX(-50%); } /* drawer is full-width here, nowhere to shift to */
 		#controls { gap: 2px; padding: 8px 10px; bottom: 12px; }
 		.ctl { width: 52px; }
 		.ctl .bubble { width: 42px; height: 42px; }
 		.ctl .bubble i { font-size: 1.15rem; }
 		#topbar .brandmark { display: none; }
-		#cueTimer { top: 12px; right: 12px; }
+		#cueTimer { top: 10px; padding: 6px 14px; }
 	}
 </style>
 </head>
@@ -211,7 +222,7 @@
 			<div class="step"><i class="las la-video"></i><span>Camera check</span></div>
 			<div class="step"><i class="las la-couch"></i><span>Waiting room</span></div>
 		</div>
-		<div id="paNote" class="small hidden" style="margin: -6px 0 18px 0; padding: 10px 14px; border: 1px solid rgba(246,167,92,0.35); border-radius: var(--r-sm); background: var(--accent-soft); color: var(--accent); line-height: 1.5;"><i class="las la-headphones"></i> This show uses studio-quality audio — please wear headphones to avoid echo.</div>
+		<div id="paNote" class="small hidden" style="margin: -6px 0 18px 0; padding: 10px 14px; border: 1px solid rgba(246,167,92,0.35); border-radius: var(--r-sm); background: var(--accent-soft); color: var(--accent); line-height: 1.5;"><i class="las la-headphones"></i> This show uses studio-quality audio. Please wear headphones to avoid echo.</div>
 		<div class="field">
 			<label for="guestName">Your name (shown on screen)</label>
 			<input type="text" id="guestName" maxlength="40" placeholder="e.g. Jane Smith" autocomplete="name" />
@@ -239,7 +250,7 @@
 			<div class="sunrise"></div>
 			<h2>You're in the waiting room</h2>
 			<p>Our team can see you and will bring you in shortly. Make sure your camera and
-			microphone look good — you can adjust them with the buttons below.</p>
+			microphone look good. You can adjust them with the buttons below.</p>
 		</div>
 		<div id="cueBanner"><span class="from" id="cueFrom"></span><span id="cueText"></span></div>
 		<div id="cueTimer"><div class="t" id="cueTimerVal">0:00</div><div class="lbl">time left</div></div>
@@ -249,7 +260,7 @@
 				<span><i class="las la-comment"></i> Chat &nbsp;<span class="who" id="chatScope"></span></span>
 				<button id="chatClose" title="Close chat" aria-label="Close chat"><i class="las la-times"></i></button>
 			</div>
-			<div id="chatLog"><div id="chatEmpty">No messages yet. Say hello — the show team is watching this too.</div></div>
+			<div id="chatLog"><div id="chatEmpty">No messages yet. Say hello, the show team is watching this too.</div></div>
 			<div class="chatRow">
 				<input type="text" id="chatText" maxlength="400" placeholder="Type a message…" autocomplete="off" />
 				<button class="btn sm primary" id="chatSend" title="Send"><i class="las la-paper-plane"></i></button>
@@ -266,7 +277,7 @@
 			<button class="ctl" id="blurBtn" title="Blur your background">
 				<span class="bubble"><i class="las la-magic"></i></span><span class="lbl">BLUR</span>
 			</button>
-			<button class="ctl" id="handBtn" title="Raise your hand — the team will see it">
+			<button class="ctl" id="handBtn" title="Raise your hand, the team will see it">
 				<span class="bubble"><i class="las la-hand-paper"></i></span><span class="lbl">HAND</span>
 			</button>
 			<button class="ctl" id="chatBtn" title="Open chat">
@@ -313,17 +324,17 @@
 	EV.g = Studio.sanitizeId(EV.g);
 	EV.m = Studio.sanitizeId(EV.m);
 
-	// no usable invite (rooms unknown) — explain instead of failing silently
+	// no usable invite (rooms unknown). Explain instead of failing silently
 	if (!EV.g || !EV.m) {
 		document.querySelector(".lobbyCard").innerHTML =
 			'<div class="brandmark"><span class="sun"></span> ' + (Studio.CFG.brandName || "Studio") + "</div>" +
 			'<h2 style="margin-top:20px">This link isn’t a valid invite</h2>' +
-			'<p class="muted" style="line-height:1.6">To join a show you need the personal invite link from your producer — ' +
+			'<p class="muted" style="line-height:1.6">To join a show you need the personal invite link from your producer. ' +
 			"it contains the event details. Ask them to copy it from the control room and send it to you.</p>";
 		throw new Error("no event payload");
 	}
 
-	document.title = (EV.n || "Live Event") + " — Join";
+	document.title = (EV.n || "Live Event") + ": Join";
 	$("brandName").textContent = $("brandName2").textContent = $("brandName3").textContent = EV.b || Studio.CFG.brandName || "Studio";
 	$("eventName").textContent = EV.n || "Live Event";
 	if (EV.ask) $("pwdField").classList.remove("hidden");
@@ -375,19 +386,27 @@
 		chime(520, 0.12, 660);
 	}
 	function fmtTime(s) { return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); }
+	// the countdown and the cue banner share the top-centre slot, so #stage carries a
+	// flag that pushes the banner down while a timer is on screen
+	function showTimer(on) {
+		const t = $("cueTimer");
+		t.classList.toggle("show", on);
+		if (!on) t.classList.remove("urgent");
+		$("stage").classList.toggle("timerOn", on);
+	}
 	function startCueTimer(secs) {
 		clearInterval(cueTimerId);
 		const t = $("cueTimer");
-		if (!secs || secs <= 0) { t.classList.remove("show", "urgent"); return; }
+		if (!secs || secs <= 0) { showTimer(false); return; }
 		let left = secs;
 		const render = () => {
 			$("cueTimerVal").textContent = fmtTime(Math.max(0, left));
-			t.classList.add("show");
+			showTimer(true);
 			t.classList.toggle("urgent", left <= 15);
 			if (left < 0) {
 				clearInterval(cueTimerId);
 				$("cueTimerVal").textContent = "TIME";
-				setTimeout(() => t.classList.remove("show", "urgent"), 4000);
+				setTimeout(() => showTimer(false), 4000);
 			}
 			left--;
 		};
@@ -397,7 +416,7 @@
 	}
 	function clearCues() {
 		clearInterval(cueTimerId);
-		$("cueTimer").classList.remove("show", "urgent");
+		showTimer(false);
 		$("cueBanner").classList.remove("show");
 	}
 
@@ -405,7 +424,7 @@
 		if (next === state) return;
 		const prev = state;
 		state = next;
-		clearCues(); // segment changed — stale cues/timers no longer apply
+		clearCues(); // segment changed, so stale cues and timers no longer apply
 		const overlay = $("waitOverlay");
 		if (next === "waiting") {
 			setPill("waiting", "WAITING ROOM", "Our team will be right with you");
@@ -471,7 +490,7 @@
 		$("chatScope").textContent = o.dc ? "· show team only" : "· everyone in the room";
 		$("chatEmpty").textContent = o.dc
 			? "No messages yet. Anything you send here goes privately to the show team."
-			: "No messages yet. Say hello — the show team is watching this too.";
+			: "No messages yet. Say hello, the show team is watching this too.";
 
 		$("lobby").classList.add("hidden");
 		$("call").classList.remove("hidden");
@@ -482,25 +501,28 @@
 
 	/* ---------- hide VDO's own control bar; we provide our own ---------- */
 	// Also hide any Control Room video tile: producers are heard (Talk/whisper) but
-	// never seen — their director streams all use "dir_"-prefixed stream IDs.
-	// #overlayMsgs is VDO's own raw white chat/cue text — we render cues as our own
+	// never seen: their director streams all use "dir_"-prefixed stream IDs.
+	// #overlayMsgs is VDO's own raw white chat/cue text. We render cues as our own
 	// styled banner from the gotChat event, so suppress VDO's copy to avoid doubles.
 	// #chatModule is VDO's chat window; we drive the same engine from our own drawer
 	// (see CHAT below), so it stays hidden.
+	// #obsState is VDO's green ACTIVE / ON AIR badge, which lands top-centre right over
+	// the call. Our own status pill in the top bar says the same thing without covering
+	// anyone, so VDO's copy goes away.
 	//
 	// VDO's tally puts a permanent green inset box-shadow on #main (.onair). We keep the
 	// "you're on stage" signal but make it a brief flash instead of a constant frame:
 	// the animation replays every time .onair is (re)applied, then settles to nothing.
 	// Our own persistent ON AIR pill in the top bar carries the ongoing status.
-	// Visual fallback for the producer's talkback tile — the real exclusion is done in
+	// Visual fallback for the producer's talkback tile. The real exclusion is done in
 	// neutralizeDirectorTiles() below (which also removes it from the grid count). The
 	// container selector must target the grid tile, not just the <video> inside it.
-	// #connectUsers / #userList are VDO's "invisible guests" roster popup — it shows a
+	// #connectUsers / #userList are VDO's "invisible guests" roster popup. It shows a
 	// "Not Visible · Control Room" chip when the producer talks (audio-only). Guests get
 	// their status from our own top bar and these hold no video tiles, so hiding them
 	// removes the last trace of the producer from the guest's screen.
 	const CHROME_HIDE_CSS =
-		"#controlButtons, #header, #translateButton, #reportbutton, #overlayMsgs, #userList, #connectUsers, #chatModule { display: none !important; }" +
+		"#controlButtons, #header, #translateButton, #reportbutton, #overlayMsgs, #userList, #connectUsers, #chatModule, #obsState { display: none !important; }" +
 		' [data-sid^="dir_"], .container_holder_video:has(video[data-sid^="dir_"]) { display: none !important; }' +
 		" #main.onair { box-shadow: none !important; animation: adOnAirFlash 2.8s ease-out 1 !important; }" +
 		" @keyframes adOnAirFlash { 0%,55% { box-shadow: inset 0 0 max(10vw,10vh) green; } 100% { box-shadow: inset 0 0 0 rgba(0,128,0,0); } }";
@@ -513,7 +535,7 @@
 	   Talk (press2talk) publishes an audio-only director stream; VDO would otherwise show
 	   it as a blank participant tile that also shrinks everyone else in the grid. We set
 	   VDO's own `directorVideoMuted` flag on that stream, which makes updateMixer skip it
-	   entirely — no tile, no reserved slot, and it can't linger after Talk stops. The
+	   entirely: no tile, no reserved slot, and it can't linger after Talk stops. The
 	   talkback AUDIO is governed separately, so guests still hear the producer. */
 	let dirObserver = null, dirThrottle = 0;
 	function neutralizeDirectorTiles() {
@@ -558,7 +580,7 @@
 		if (!s) return;
 		neutralizeDirectorTiles(); // fallback in case the observer missed the tile's creation
 		try {
-			// VDO shows its own "please wait" popup in hold mode — our overlay covers that
+			// VDO shows its own "please wait" popup in hold mode, and our overlay covers that
 			const am = iframe.contentWindow.document.getElementById("alertModal");
 			if (am && /wait until the director/i.test(am.textContent || "")) am.style.display = "none";
 		} catch (e) {}
@@ -571,7 +593,7 @@
 			if (dirSid.indexOf("dir_" + EV.m + "_") === 0) applyState("live");
 			else if (dirSid.indexOf("dir_" + EV.g + "_") === 0) applyState("green");
 			else if (state === "waiting" || state === "connecting") applyState("green"); // admitted, director id unknown
-			// otherwise: director reconnecting — keep the current state
+			// otherwise: director reconnecting, so keep the current state
 		} catch (e) {}
 	}
 
@@ -607,7 +629,7 @@
 			else if (!mine && /^📣/.test(raw)) showCue(raw.replace(/^📣\s*/, ""), from);
 			// VDO pushes its own local notices ("You've been transferred…") down the chat
 			// channel with no sender. Real people always carry a label, so an empty one
-			// means it's a system line — render it as one instead of faking an author.
+			// means it's a system line. Render it as one instead of faking an author.
 			else if (!mine && !from) addChatSys(raw);
 			else if (raw) addChatMsg(raw, mine ? "You" : from, mine, /chat_director/.test(rawLabel));
 		}
@@ -615,7 +637,7 @@
 
 	/* ---------- chat drawer ----------
 	   We drive VDO's own chat engine (same-origin sendChatMessage, so the producer's
-	   "Private chat" setting is honoured — messages go only to the control room when it's
+	   "Private chat" setting is honoured, so messages go only to the control room when it's
 	   on) but render every message ourselves so it matches the rest of the guest UI. */
 	let chatOpen = false, chatUnread = 0;
 	function pushChat(text, who, cls) {
@@ -642,7 +664,7 @@
 			chime(700, 0.09, 880);
 		}
 	}
-	function addChatSys(text) { pushChat(text, "", " sys"); } // no badge, no chime — it isn't a message
+	function addChatSys(text) { pushChat(text, "", " sys"); } // no badge, no chime, it isn't a message
 	function setChatOpen(open) {
 		chatOpen = open;
 		$("chatPanel").classList.toggle("open", open);
@@ -665,7 +687,7 @@
 			w.sendChatMessage(text); // echoes back to us as { chat: { type: "sent" } }
 			input.value = "";
 		} catch (e) {
-			Studio.toast("Chat isn't connected yet — try again in a moment", true);
+			Studio.toast("Chat isn't connected yet, try again in a moment", true);
 		}
 	}
 	$("chatBtn").addEventListener("click", () => setChatOpen(!chatOpen));
@@ -705,7 +727,7 @@
 			w.updateRenderOutpipe();
 			renderToggles();
 		} catch (e) {
-			Studio.toast("Blur isn't available on this device — try Settings → Effects", true);
+			Studio.toast("Blur isn't available on this device. Try Settings → Effects", true);
 		}
 	});
 	$("leaveBtn").addEventListener("click", () => {

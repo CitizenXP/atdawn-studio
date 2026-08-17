@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Control Room — At Dawn Studio</title>
+<title>Control Room · At Dawn Studio</title>
 <link rel="stylesheet" href="../lineawesome/css/line-awesome.min.css" />
 <link rel="stylesheet" href="studio.css" />
 <style>
@@ -367,8 +367,8 @@
 					<div class="roomCol">
 						<h3><i class="las la-couch"></i> Green room <span class="cnt" id="cntGreen">0</span></h3>
 						<div class="colTools">
-							<button class="btn sm listen" data-room="green" data-tool="listen" title="Hear this room in your headphones — guests aren't told and the stream never hears it"><i class="las la-headphones"></i> Listen</button>
-							<button class="btn sm talk" data-room="green" data-tool="talk" title="Your voice to everyone in the green room — never reaches the stream"><i class="las la-microphone"></i> Talk</button>
+							<button class="btn sm listen" data-room="green" data-tool="listen" title="Hear this room in your headphones. Guests aren't told and the stream never hears it"><i class="las la-headphones"></i> Listen</button>
+							<button class="btn sm talk" data-room="green" data-tool="talk" title="Your voice to everyone in the green room. Never reaches the stream"><i class="las la-microphone"></i> Talk</button>
 							<button class="btn sm" data-room="green" data-tool="cueAll" title="Send an on-screen message to everyone here"><i class="las la-bullhorn"></i> Cue all</button>
 							<button class="btn sm" data-room="green" data-tool="timer" title="Show a countdown on everyone's screen"><i class="las la-stopwatch"></i> Timer</button>
 							<button class="btn sm" data-room="green" data-tool="muteAll" title="Cut every mic in this room"><i class="las la-volume-mute"></i> Mute all</button>
@@ -379,8 +379,8 @@
 					<div class="roomCol">
 						<h3><i class="las la-broadcast-tower"></i> Main broadcast <span class="cnt" id="cntMain">0</span></h3>
 						<div class="colTools">
-							<button class="btn sm listen" data-room="main" data-tool="listen" title="Hear the broadcast room in your headphones — the stream never hears it"><i class="las la-headphones"></i> Listen</button>
-							<button class="btn sm talk" data-room="main" data-tool="talk" title="Your voice to everyone on air (guests only — the stream never hears you)"><i class="las la-microphone"></i> Talk</button>
+							<button class="btn sm listen" data-room="main" data-tool="listen" title="Hear the broadcast room in your headphones. The stream never hears it"><i class="las la-headphones"></i> Listen</button>
+							<button class="btn sm talk" data-room="main" data-tool="talk" title="Your voice to everyone on air (guests only: the stream never hears you)"><i class="las la-microphone"></i> Talk</button>
 							<button class="btn sm" data-room="main" data-tool="cueAll" title="Send an on-screen message to everyone here"><i class="las la-bullhorn"></i> Cue all</button>
 							<button class="btn sm" data-room="main" data-tool="timer" title="Show a countdown on everyone's screen"><i class="las la-stopwatch"></i> Timer</button>
 							<button class="btn sm" data-room="main" data-tool="muteAll" title="Panic button: cut every mic on air"><i class="las la-volume-mute"></i> Mute all</button>
@@ -394,33 +394,33 @@
 			<div class="miniGrid">
 				<div class="miniCard">
 					<b><i class="las la-link"></i> Guest invite link</b>
-					<span>One link for every guest — name prompt, camera check, waiting room.</span>
+					<span>One link for every guest: name prompt, camera check, waiting room.</span>
 					<button class="btn sm primary" data-copy="guest"><i class="las la-copy"></i> Copy</button>
 				</div>
 				<div class="miniCard">
 					<b><i class="las la-user-shield"></i> Co-producer dashboard</b>
-					<span>This control room — producers log in with the admin password and get every control on this page.</span>
+					<span>This control room. Producers log in with the admin password and get every control on this page.</span>
 					<button class="btn sm" data-copy="admin"><i class="las la-copy"></i> Copy</button>
 				</div>
 				<div class="miniCard">
-					<b><i class="las la-photo-video"></i> Main broadcast — OBS mix</b>
+					<b><i class="las la-photo-video"></i> Main broadcast, OBS mix</b>
 					<span>Auto-mixed scene of everyone on air. 1920×1080, "Control audio via OBS" on.</span>
 					<button class="btn sm primary" data-copy="sceneMain"><i class="las la-copy"></i> Copy</button>
 				</div>
 				<div class="miniCard">
-					<b><i class="las la-couch"></i> Green room — OBS mix</b>
+					<b><i class="las la-couch"></i> Green room, OBS mix</b>
 					<span>Monitor or program feed of the green room, mixed the same way.</span>
 					<button class="btn sm" data-copy="sceneGreen"><i class="las la-copy"></i> Copy</button>
 				</div>
 				<div class="miniCard">
 					<b><i class="las la-headset"></i> Solo feeds</b>
-					<span>Per-guest OBS source with its own audio fader — press <b style="font-size:inherit">Solo link</b> on any guest card above. Re-copy it if the guest changes rooms.</span>
+					<span>Per-guest OBS source with its own audio fader. Press <b style="font-size:inherit">Solo link</b> on any guest card above. Re-copy it if the guest changes rooms.</span>
 				</div>
 			</div>
 
 			<div id="monitorSection">
 				<h3 class="monHead"><i class="las la-eye"></i> Live monitors <span class="cnt" id="cntMon">0</span> <span class="monHint">muted preview · press <b>Listen</b> above to hear a room</span></h3>
-				<div id="monitorStrip"><div class="emptyNote">Guests' live video appears here the moment they connect — no need to open a room tab.</div></div>
+				<div id="monitorStrip"><div class="emptyNote">Guests' live video appears here the moment they connect, so there's no need to open a room tab.</div></div>
 			</div>
 
 			<div class="optionsLine">
@@ -428,7 +428,6 @@
 				<label class="checkline"><input type="checkbox" id="labelsChk" /> Show name labels on the OBS mixes</label>
 				<label class="checkline"><input type="checkbox" id="autoRecChk" /> Auto-record every guest while they're on air (saves to this computer)</label>
 			</div>
-			<div id="popMenu"></div>
 		</div>
 
 		<!-- ---------- GREEN ROOM ---------- -->
@@ -436,21 +435,21 @@
 			<div class="viewHead">
 				<h2><i class="las la-couch"></i> Green Room <span class="cnt" id="cntGreenTab">0</span></h2>
 				<div class="roomTools">
-					<button class="btn sm listen" data-room="green" data-tool="listen" title="Hear this room in your headphones — guests aren't told and the stream never hears it"><i class="las la-headphones"></i> Listen</button>
-					<button class="btn sm talk" data-room="green" data-tool="talk" title="Your voice to everyone in the green room — never reaches the stream"><i class="las la-microphone"></i> Talk</button>
+					<button class="btn sm listen" data-room="green" data-tool="listen" title="Hear this room in your headphones. Guests aren't told and the stream never hears it"><i class="las la-headphones"></i> Listen</button>
+					<button class="btn sm talk" data-room="green" data-tool="talk" title="Your voice to everyone in the green room. Never reaches the stream"><i class="las la-microphone"></i> Talk</button>
 					<button class="btn sm" data-room="green" data-tool="cueAll" title="Send an on-screen message to everyone here"><i class="las la-bullhorn"></i> Cue all</button>
 					<button class="btn sm" data-room="green" data-tool="timer" title="Show a countdown on everyone's screen"><i class="las la-stopwatch"></i> Timer</button>
 					<button class="btn sm" data-room="green" data-tool="muteAll" title="Cut every mic in this room"><i class="las la-volume-mute"></i> Mute all</button>
 					<button class="btn sm" data-room="green" data-tool="unmuteAll" title="Open every mic in this room"><i class="las la-volume-up"></i> Unmute</button>
 				</div>
 				<div class="spacer"></div>
-				<button class="btn sm" id="popGreen" title="VDO.Ninja's full director console in a new tab — gain, EQ, quality and every advanced control"><i class="las la-external-link-alt"></i> Advanced</button>
+				<button class="btn sm" id="popGreen" title="VDO.Ninja's full director console in a new tab: gain, EQ, quality and every advanced control"><i class="las la-external-link-alt"></i> Advanced</button>
 			</div>
 			<div class="roomBody">
 				<div class="monitorPane">
-					<div class="monEmpty">Live monitor — everyone in this room appears here the moment they connect.</div>
+					<div class="monEmpty">Live monitor: everyone in this room appears here the moment they connect.</div>
 					<iframe id="monGreen" allow="autoplay; fullscreen"></iframe>
-					<div class="monTag" id="tagGreen"><span class="hdot"></span> <span>Monitor · silent — press Listen to hear</span></div>
+					<div class="monTag" id="tagGreen"><span class="hdot"></span> <span>Monitor · silent, press Listen to hear</span></div>
 				</div>
 				<div class="roomGuests" data-guestlist="green" id="listGreenTab"><div class="emptyNote">No one here yet. Guests appear the moment they open their invite link.</div></div>
 			</div>
@@ -461,21 +460,21 @@
 			<div class="viewHead">
 				<h2><i class="las la-broadcast-tower"></i> Main Broadcast <span class="cnt" id="cntMainTab">0</span></h2>
 				<div class="roomTools">
-					<button class="btn sm listen" data-room="main" data-tool="listen" title="Hear the broadcast room in your headphones — the stream never hears it"><i class="las la-headphones"></i> Listen</button>
-					<button class="btn sm talk" data-room="main" data-tool="talk" title="Your voice to everyone on air (guests only — the stream never hears you)"><i class="las la-microphone"></i> Talk</button>
+					<button class="btn sm listen" data-room="main" data-tool="listen" title="Hear the broadcast room in your headphones. The stream never hears it"><i class="las la-headphones"></i> Listen</button>
+					<button class="btn sm talk" data-room="main" data-tool="talk" title="Your voice to everyone on air (guests only: the stream never hears you)"><i class="las la-microphone"></i> Talk</button>
 					<button class="btn sm" data-room="main" data-tool="cueAll" title="Send an on-screen message to everyone here"><i class="las la-bullhorn"></i> Cue all</button>
 					<button class="btn sm" data-room="main" data-tool="timer" title="Show a countdown on everyone's screen"><i class="las la-stopwatch"></i> Timer</button>
 					<button class="btn sm" data-room="main" data-tool="muteAll" title="Panic button: cut every mic on air"><i class="las la-volume-mute"></i> Mute all</button>
 					<button class="btn sm" data-room="main" data-tool="unmuteAll" title="Open every mic in this room"><i class="las la-volume-up"></i> Unmute</button>
 				</div>
 				<div class="spacer"></div>
-				<button class="btn sm" id="popMain" title="VDO.Ninja's full director console in a new tab — gain, EQ, quality and every advanced control"><i class="las la-external-link-alt"></i> Advanced</button>
+				<button class="btn sm" id="popMain" title="VDO.Ninja's full director console in a new tab: gain, EQ, quality and every advanced control"><i class="las la-external-link-alt"></i> Advanced</button>
 			</div>
 			<div class="roomBody">
 				<div class="monitorPane">
-					<div class="monEmpty">Live monitor — this matches what OBS receives from the broadcast room.</div>
+					<div class="monEmpty">Live monitor: this matches what OBS receives from the broadcast room.</div>
 					<iframe id="monMain" allow="autoplay; fullscreen"></iframe>
-					<div class="monTag" id="tagMain"><span class="hdot"></span> <span>Monitor · silent — press Listen to hear</span></div>
+					<div class="monTag" id="tagMain"><span class="hdot"></span> <span>Monitor · silent, press Listen to hear</span></div>
 				</div>
 				<div class="roomGuests" data-guestlist="main" id="listMainTab"><div class="emptyNote">Nobody on air. Move guests here from the green room when it's showtime.</div></div>
 			</div>
@@ -485,8 +484,8 @@
 		<div class="view pad" id="view-roster">
 			<h2 class="viewTitle">Guest Links</h2>
 			<div class="card" style="max-width:900px; margin-bottom:22px">
-				<h3><i class="las la-magic"></i> Pre-build your show — before the event</h3>
-				<p class="small muted" style="line-height:1.65">Add each guest here to get a <b>personal invite link</b> and a matching <b>OBS solo-feed link</b> that never change. Preload the OBS links into your scene ahead of time and send each guest their invite — on the day, the moment you send a guest to broadcast their OBS source lights up automatically. No copying links mid-show.</p>
+				<h3><i class="las la-magic"></i> Pre-build your show, before the event</h3>
+				<p class="small muted" style="line-height:1.65">Add each guest here to get a <b>personal invite link</b> and a matching <b>OBS solo-feed link</b> that never change. Preload the OBS links into your scene ahead of time and send each guest their invite. On the day, the moment you send a guest to broadcast their OBS source lights up automatically. No copying links mid-show.</p>
 				<div class="field" style="margin-top:8px"><label>Add a guest (their on-screen name)</label>
 					<div style="display:flex; gap:8px">
 						<input type="text" id="rosterName" maxlength="40" placeholder="e.g. Jane Smith" style="flex:1" />
@@ -500,7 +499,7 @@
 
 			<div class="card hidden" id="rosterBulkCard" style="max-width:900px; margin-top:20px">
 				<h3><i class="las la-photo-video"></i> Bulk OBS setup</h3>
-				<p class="small muted" style="line-height:1.6">Copy every guest's broadcast solo link at once — paste them into OBS as browser sources (1920×1080, "Control audio via OBS").</p>
+				<p class="small muted" style="line-height:1.6">Copy every guest's broadcast solo link at once, then paste them into OBS as browser sources (1920×1080, "Control audio via OBS").</p>
 				<button class="btn" id="rosterCopyAllObs"><i class="las la-copy"></i> Copy all broadcast OBS links</button>
 				<button class="btn" id="rosterCopyAllInvites"><i class="las la-copy"></i> Copy all invite links</button>
 			</div>
@@ -518,35 +517,35 @@
 					<div class="field"><label>Main broadcast room ID</label><input type="text" id="setMain" /></div>
 					<div class="field"><label>Room password</label><input type="text" id="setPwd" /></div>
 					<button class="btn primary" id="saveSettings"><i class="las la-save"></i> Save &amp; reconnect rooms</button>
-					<button class="btn" id="newEventBtn" title="Generates fresh room names — old links stop working"><i class="las la-sync"></i> New event (fresh rooms)</button>
+					<button class="btn" id="newEventBtn" title="Generates fresh room names, so old links stop working"><i class="las la-sync"></i> New event (fresh rooms)</button>
 				</div>
 				<div class="card">
 					<h3><i class="las la-sliders-h"></i> Guest features &amp; audio</h3>
-					<label class="checkline" style="margin-bottom:11px"><input type="checkbox" id="ngChk" /> <span><b>Noise gate</b> — auto-duck guest mics when they aren't speaking (kills keyboard clatter &amp; room noise)</span></label>
-					<label class="checkline" style="margin-bottom:11px"><input type="checkbox" id="paChk" /> <span><b>Pro audio</b> — 256&nbsp;kbps stereo, unprocessed. For music &amp; performances; guests must wear headphones</span></label>
-					<label class="checkline" style="margin-bottom:11px"><input type="checkbox" id="tallyChk" /> <span><b>On-air tally</b> — red indicator on the guest's screen whenever their feed is live in OBS</span></label>
-					<label class="checkline" style="margin-bottom:11px"><input type="checkbox" id="dcChk" /> <span><b>Private chat</b> — guest chat messages go only to producers, not to other guests</span></label>
-					<label class="checkline" style="margin-bottom:11px"><input type="checkbox" id="ccChk" /> <span><b>Live captions</b> — transcribe guest speech (Chrome) and show captions on the OBS feeds</span></label>
-					<p class="small muted" style="line-height:1.6; margin-bottom:0">Changes bake into the links — re-copy the guest invite and OBS links after saving. Guests already connected keep their old settings until they rejoin.</p>
+					<label class="checkline" style="margin-bottom:11px"><input type="checkbox" id="ngChk" /> <span><b>Noise gate</b>: auto-duck guest mics when they aren't speaking (kills keyboard clatter &amp; room noise)</span></label>
+					<label class="checkline" style="margin-bottom:11px"><input type="checkbox" id="paChk" /> <span><b>Pro audio</b>: 256&nbsp;kbps stereo, unprocessed. For music &amp; performances; guests must wear headphones</span></label>
+					<label class="checkline" style="margin-bottom:11px"><input type="checkbox" id="tallyChk" /> <span><b>On-air tally</b>: red indicator on the guest's screen whenever their feed is live in OBS</span></label>
+					<label class="checkline" style="margin-bottom:11px"><input type="checkbox" id="dcChk" /> <span><b>Private chat</b>: guest chat messages go only to producers, not to other guests</span></label>
+					<label class="checkline" style="margin-bottom:11px"><input type="checkbox" id="ccChk" /> <span><b>Live captions</b>: transcribe guest speech (Chrome) and show captions on the OBS feeds</span></label>
+					<p class="small muted" style="line-height:1.6; margin-bottom:0">Changes bake into the links, so re-copy the guest invite and OBS links after saving. Guests already connected keep their old settings until they rejoin.</p>
 				</div>
 				<div class="card">
 					<h3><i class="las la-photo-video"></i> Broadcast &amp; recording</h3>
-					<div class="field"><label>Standby message (shown in OBS when no one is live)</label><input type="text" id="setWaitMsg" placeholder="e.g. At Dawn — starting soon" /></div>
+					<div class="field"><label>Standby message (shown in OBS when no one is live)</label><input type="text" id="setWaitMsg" placeholder="e.g. At Dawn, starting soon" /></div>
 					<div class="field"><label>Standby image URL (optional, https)</label><input type="text" id="setWaitImg" placeholder="https://…/starting-soon.png" /></div>
 					<div class="field"><label>Recording quality (manual &amp; auto-record)</label>
 						<select id="setRecMode">
-							<option value="2500">Standard video — 2.5 Mbps</option>
-							<option value="6000">High-quality video — 6 Mbps</option>
-							<option value="12000">Maximum video — 12 Mbps</option>
-							<option value="-256">Audio only — Opus 256 kbps (podcast)</option>
-							<option value="0">Audio only — lossless PCM (huge files)</option>
+							<option value="2500">Standard video: 2.5 Mbps</option>
+							<option value="6000">High-quality video: 6 Mbps</option>
+							<option value="12000">Maximum video: 12 Mbps</option>
+							<option value="-256">Audio only: Opus 256 kbps (podcast)</option>
+							<option value="0">Audio only: lossless PCM (huge files)</option>
 						</select>
 					</div>
 					<p class="small muted" style="line-height:1.6; margin-bottom:0">Recordings save to this computer's downloads folder. Standby settings apply to newly copied OBS links.</p>
 				</div>
 				<div class="card">
 					<h3><i class="las la-th-large"></i> Stream Deck &amp; remote control</h3>
-					<p class="small muted" style="line-height:1.6">Drive the studio from a Stream Deck (free <b>Bitfocus Companion</b> app, "VDO.Ninja" module) or any HTTP request. Each room gets its own key — add them as two Companion instances. This control room must stay open for commands to work.</p>
+					<p class="small muted" style="line-height:1.6">Drive the studio from a Stream Deck (free <b>Bitfocus Companion</b> app, "VDO.Ninja" module) or any HTTP request. Each room gets its own key, so add them as two Companion instances. This control room must stay open for commands to work.</p>
 					<div class="field"><label>API key</label><input type="text" id="setApiKey" placeholder="Leave empty to disable" /></div>
 					<button class="btn" id="genApiBtn"><i class="las la-magic"></i> Generate key</button>
 					<div id="apiKeyInfo" class="hidden">
@@ -568,6 +567,11 @@
 	</div>
 </div>
 
+<!-- Cue/timer popover. Lives at body level, NOT inside a view: the views are
+     display:none when inactive, which would make this unrenderable (and the Cue all
+     / Timer buttons silently dead) on every tab except the one it was nested in. -->
+<div id="popMenu"></div>
+
 <!-- ============ PRODUCER CHAT ============ -->
 <button id="chatFab" class="hidden" title="Guest chat"><i class="las la-comments"></i><span class="cnt" id="chatFabCnt">0</span></button>
 <div id="chatDrawer">
@@ -579,13 +583,13 @@
 		<button class="active" data-chatroom="green"><i class="las la-couch"></i> Green room <span class="un" id="unGreen">0</span></button>
 		<button data-chatroom="main"><i class="las la-broadcast-tower"></i> Broadcast <span class="un" id="unMain">0</span></button>
 	</div>
-	<div class="chatLog" id="chatLogGreen"><div class="cEmpty">Nothing yet. Messages guests type in the green room appear here — and what you send goes to everyone in that room as <b>Control Room</b>.</div></div>
-	<div class="chatLog hidden" id="chatLogMain"><div class="cEmpty">Nothing yet. Messages from guests on air appear here — and what you send goes to everyone in the broadcast room as <b>Control Room</b>.</div></div>
+	<div class="chatLog" id="chatLogGreen"><div class="cEmpty">Nothing yet. Messages guests type in the green room appear here, and what you send goes to everyone in that room as <b>Control Room</b>.</div></div>
+	<div class="chatLog hidden" id="chatLogMain"><div class="cEmpty">Nothing yet. Messages from guests on air appear here, and what you send goes to everyone in the broadcast room as <b>Control Room</b>.</div></div>
 	<div class="dRow">
 		<input type="text" id="chatDrawerText" maxlength="400" placeholder="Message this room…" autocomplete="off" />
 		<button class="btn sm primary" id="chatDrawerSend" title="Send"><i class="las la-paper-plane"></i></button>
 	</div>
-	<div class="dNote">Text only — the stream never sees this. For a big on-screen prompt use <b>Cue</b>; to talk out loud use <b>Talk</b>.</div>
+	<div class="dNote">Text only: the stream never sees this. For a big on-screen prompt use <b>Cue</b>; to talk out loud use <b>Talk</b>.</div>
 </div>
 
 <!-- hidden signaling engines: one persistent director connection per room.
@@ -694,7 +698,7 @@
 			// browser only asks for the mic and guests never get a Control Room video
 			// feed (press2talk otherwise grabs the default camera and keeps sending it)
 			videodevice: forEngine ? 0 : false,
-			// Stream Deck / Companion remote control — one key per room
+			// Stream Deck / Companion remote control: one key per room
 			api: EV.apiKey ? EV.apiKey + (room === EV.green ? "_green" : "_main") : false
 		});
 	}
@@ -730,7 +734,7 @@
 	function remountMonitors() {
 		["monGreen", "monMain"].forEach(id => {
 			const f = $(id);
-			if (!f.src) return; // never opened — stays lazy
+			if (!f.src) return; // never opened, stays lazy
 			f.removeAttribute("src");
 			f.classList.remove("on");
 			delete f.dataset.room;
@@ -799,7 +803,7 @@
 	document.querySelectorAll("[data-copy]").forEach(btn => {
 		btn.addEventListener("click", async () => {
 			const ok = await Studio.copyText(LINKS[btn.dataset.copy]());
-			Studio.toast(ok ? "Link copied to clipboard" : "Copy failed — check browser permissions", !ok);
+			Studio.toast(ok ? "Link copied to clipboard" : "Copy failed: check browser permissions", !ok);
 		});
 	});
 	$("askPwdChk").addEventListener("change", () => {
@@ -810,7 +814,7 @@
 	$("labelsChk").addEventListener("change", () => {
 		EV.labels = $("labelsChk").checked;
 		saveEvent();
-		Studio.toast("Saved — re-copy the OBS links to apply");
+		Studio.toast("Saved. Re-copy the OBS links to apply");
 	});
 	$("autoRecChk").addEventListener("change", () => {
 		EV.autoRec = $("autoRecChk").checked;
@@ -821,7 +825,7 @@
 	/* ================= GUEST LINKS (ROSTER) ================= */
 	// A simple, name-based roster stored in this browser. Each guest's links are derived
 	// deterministically from their name + the current rooms, so they're reproducible and
-	// stable — preload them into OBS and send invites before the event.
+	// stable, so preload them into OBS and send invites before the event.
 	let ROSTER = [];
 	try { ROSTER = JSON.parse(localStorage.getItem("studio_roster_v1")) || []; } catch (e) {}
 	function saveRoster() { localStorage.setItem("studio_roster_v1", JSON.stringify(ROSTER)); }
@@ -844,7 +848,7 @@
 			: '<div class="rosterEmpty">No guests yet. Add your line-up above to generate their invite &amp; OBS links.</div>';
 		$("rosterBulkCard").classList.toggle("hidden", !ROSTER.length);
 		$("rosterRoomsNote").innerHTML = "These links point at <b>" + escapeHtml(EV.main) + "</b> (broadcast) and <b>" + escapeHtml(EV.green) +
-			"</b> (green). They stay valid as long as you keep the same rooms — don't run <b>New event</b> in Settings, or they'll all change.";
+			"</b> (green). They stay valid as long as you keep the same rooms. Don't run <b>New event</b> in Settings, or they'll all change.";
 	}
 	$("rosterAdd").addEventListener("click", addRosterGuest);
 	$("rosterName").addEventListener("keydown", e => { if (e.key === "Enter") addRosterGuest(); });
@@ -858,7 +862,7 @@
 		saveRoster();
 		$("rosterName").value = "";
 		renderRoster();
-		Studio.toast("Added " + name + " — copy their links below");
+		Studio.toast("Added " + name + ": copy their links below");
 	}
 	$("rosterList").addEventListener("click", async e => {
 		const btn = e.target.closest("[data-ract]");
@@ -874,7 +878,7 @@
 			return;
 		}
 		let link = "", what = "";
-		if (act === "invite") { link = personalInvite(name); what = "Personal invite for " + name + " copied — send it to them"; }
+		if (act === "invite") { link = personalInvite(name); what = "Personal invite for " + name + " copied. Send it to them"; }
 		else if (act === "obsMain") { link = soloLink(rosterSid(name), EV.main); what = "Broadcast OBS solo link for " + name + " copied"; }
 		else if (act === "obsGreen") { link = soloLink(rosterSid(name), EV.green); what = "Green-room OBS solo link for " + name + " copied"; }
 		const ok = await Studio.copyText(link);
@@ -898,18 +902,18 @@
 		$(id).addEventListener("change", () => {
 			EV[key] = $(id).checked;
 			saveEvent();
-			Studio.toast("Saved — re-copy the guest & OBS links to apply");
+			Studio.toast("Saved. Re-copy the guest & OBS links to apply");
 		});
 	});
 	$("setWaitMsg").addEventListener("change", () => {
 		EV.waitMsg = $("setWaitMsg").value.trim();
 		saveEvent();
-		Studio.toast("Saved — re-copy the OBS links to apply");
+		Studio.toast("Saved. Re-copy the OBS links to apply");
 	});
 	$("setWaitImg").addEventListener("change", () => {
 		EV.waitImg = $("setWaitImg").value.trim();
 		saveEvent();
-		Studio.toast("Saved — re-copy the OBS links to apply");
+		Studio.toast("Saved. Re-copy the OBS links to apply");
 	});
 	$("setRecMode").addEventListener("change", () => {
 		EV.recMode = $("setRecMode").value;
@@ -932,20 +936,20 @@
 		saveEvent();
 		renderApiInfo();
 		mountDirectors(); // directors must reload with &api to start listening
-		Studio.toast(EV.apiKey ? "Remote control on — rooms reconnected with API keys" : "Remote control off");
+		Studio.toast(EV.apiKey ? "Remote control on: rooms reconnected with API keys" : "Remote control off");
 	}
 	$("setApiKey").addEventListener("change", () => applyApiKey($("setApiKey").value));
 	$("genApiBtn").addEventListener("click", () => applyApiKey("atdawn_" + Studio.randId(8)));
 
-	/* ================= TALKBACK (producer voice — never reaches the stream) ================= */
+	/* ================= TALKBACK (producer voice, never reaches the stream) ================= */
 	// per-room talk state: "off" | "room" | "<uuid>" (whispering to one guest)
 	const talk = { green: "off", main: "off" };
 	function frameOf(room) { return room === "green" ? $("dirGreen") : $("dirMain"); }
 	function roomLabel(room) { return room === "green" ? "the green room" : "the broadcast room"; }
 
-	/* ================= LISTEN (producer ears — per room, local to this dashboard) ================= */
+	/* ================= LISTEN (producer ears, per room, local to this dashboard) ================= */
 	// VDO directors start with audio playback muted; Listen unmutes that room's engine frame.
-	// Exclusive by design — like PFL on a mixing desk, you monitor one room at a time.
+	// Exclusive by design: like PFL on a mixing desk, you monitor one room at a time.
 	const listen = { green: false, main: false };
 	function setListen(room, on) {
 		const frame = frameOf(room);
@@ -953,29 +957,29 @@
 		try { w = frame.contentWindow; if (!w || !w.session) throw 0; } catch (e) { Studio.toast("That room isn't connected yet", true); return; }
 		try {
 			if (on && listen[room === "green" ? "main" : "green"]) setListen(room === "green" ? "main" : "green", false);
-			// toggleSpeakerMute() flips from the current value — set the opposite, then toggle
+			// toggleSpeakerMute() flips from the current value, so set the opposite, then toggle
 			w.session.speakerMuted = on ? true : false;
 			w.toggleSpeakerMute();
 			listen[room] = on;
 		} catch (e) {
 			console.warn(e);
-			Studio.toast("Couldn't change monitoring — try the Advanced view", true);
+			Studio.toast("Couldn't change monitoring. Try the Advanced view", true);
 			return;
 		}
-		if (on) Studio.toast("Listening to " + roomLabel(room) + " — guests aren't told, the stream never hears it");
+		if (on) Studio.toast("Listening to " + roomLabel(room) + ": guests aren't told, the stream never hears it");
 		renderListenButtons();
 	}
 	function renderListenButtons() {
 		document.querySelectorAll('[data-tool="listen"]').forEach(btn => {
 			const on = listen[btn.dataset.room];
 			btn.classList.toggle("active", on);
-			btn.innerHTML = on ? '<i class="las la-headphones"></i> Listening — stop' : '<i class="las la-headphones"></i> Listen';
+			btn.innerHTML = on ? '<i class="las la-headphones"></i> Listening, stop' : '<i class="las la-headphones"></i> Listen';
 		});
 		[["tagGreen", "green"], ["tagMain", "main"]].forEach(([id, room]) => {
 			const tag = $(id);
 			if (!tag) return;
 			tag.classList.toggle("live", listen[room]);
-			tag.querySelector("span:last-child").textContent = listen[room] ? "Monitor · you're listening" : "Monitor · silent — press Listen to hear";
+			tag.querySelector("span:last-child").textContent = listen[room] ? "Monitor · you're listening" : "Monitor · silent, press Listen to hear";
 			tag.querySelector(".hdot").className = "hdot " + (listen[room] ? "g" : "u");
 		});
 	}
@@ -985,7 +989,7 @@
 		return new Promise(resolve => {
 			if (w.session.directorEnabledPPT) { resolve(true); return; }
 			try { w.press2talk(true); } catch (e) { resolve(false); return; }
-			Studio.toast("Starting your mic — allow microphone access if prompted…");
+			Studio.toast("Starting your mic. Allow microphone access if prompted…");
 			let waited = 0;
 			const iv = setInterval(() => {
 				waited += 300;
@@ -1010,17 +1014,17 @@
 			talk[room] = "off";
 		} else {
 			const ok = await ensureMic(w);
-			if (!ok) { Studio.toast("Couldn't start the microphone — check browser permissions", true); return; }
+			if (!ok) { Studio.toast("Couldn't start the microphone. Check browser permissions", true); return; }
 			if (mode !== "room") {
 				try {
 					if (!(w.session.soloChatUUID || []).includes(mode)) w.session.toggleSoloChat(mode);
-				} catch (e) { Studio.toast("Whisper failed — try the full director view", true); return; }
+				} catch (e) { Studio.toast("Whisper failed. Try the full director view", true); return; }
 			}
 			Studio.send(frame, { PPT: true }); // open the mic
 			talk[room] = mode;
 			Studio.toast(mode === "room"
 				? "You're live to everyone in the " + (room === "green" ? "green room" : "broadcast room") + " (not the stream)"
-				: "Whispering — only this guest hears you");
+				: "Whispering: only this guest hears you");
 		}
 		renderTalkButtons();
 		lastSnapshot = ""; // force card re-render for whisper highlights
@@ -1033,12 +1037,12 @@
 			btn.classList.toggle("active", mode !== "off");
 			btn.innerHTML = mode === "off"
 				? '<i class="las la-microphone"></i> Talk'
-				: (mode === "room" ? '<i class="las la-microphone"></i> Talking — stop' : '<i class="las la-headset"></i> Whispering — stop');
+				: (mode === "room" ? '<i class="las la-microphone"></i> Talking, stop' : '<i class="las la-headset"></i> Whispering, stop');
 		});
 	}
 
 	/* ================= CUES & TIMERS ================= */
-	const CUES = ["You're next — get ready!", "30 seconds left", "Wrap it up please", "You're clear — thanks!", "Check your mic", "Look into the camera"];
+	const CUES = ["You're next, get ready!", "30 seconds left", "Wrap it up please", "You're clear, thanks!", "Check your mic", "Look into the camera"];
 	function sendCueTo(frame, sid, text) {
 		Studio.send(frame, { action: "sendDirectorChat", target: sid, value: text });
 	}
@@ -1059,7 +1063,7 @@
 	   sees it. Both frames post { chat: {msg,label,type,time} } for every message in
 	   either direction; we tag each one by which frame it came from and render it in
 	   that room's log. Sending calls the frame's own sendChatMessage() (same-origin),
-	   so it goes out as the director — i.e. to everyone in that room, labelled
+	   so it goes out as the director, i.e. to everyone in that room, labelled
 	   "Control Room". Cues use sendDirectorChat instead and never echo here, so the
 	   log stays a real conversation rather than a copy of every prompt you fire. */
 	let chatRoom = "green", chatOpen = false;
@@ -1274,7 +1278,7 @@
 		if ((loss !== undefined && loss > 1) || (typeof rtt === "number" && rtt > 400)) return "y";
 		return "g";
 	}
-	const HEALTH_TITLE = { g: "Connection: good", y: "Connection: struggling (watch this one)", r: "Connection: BAD — video degraded", u: "Connection: measuring…" };
+	const HEALTH_TITLE = { g: "Connection: good", y: "Connection: struggling (watch this one)", r: "Connection: BAD, video degraded", u: "Connection: measuring…" };
 
 	// read guest state straight out of the same-origin director iframes
 	function readGuests(frame) {
@@ -1288,7 +1292,7 @@
 				const rpc = w.session.rpcs[uuid];
 				if (!rpc || !rpc.streamID) continue;
 				// a guest who transferred away (or dropped) can leave a zombie rpc behind until
-				// VDO's cleanup fires — skip anything whose connection is already dead
+				// VDO's cleanup fires, so skip anything whose connection is already dead
 				const cs = rpc.connectionState || "";
 				if (cs === "failed" || cs === "closed" || cs === "disconnected") continue;
 				const rq = doc.querySelector('[data-action-type="remove-queue"][data--u-u-i-d="' + uuid + '"]');
@@ -1336,12 +1340,12 @@
 			</div>
 			<div class="acts">
 				${g.queued ? `<button class="btn sm good" data-act="admit"><i class="las la-plus"></i> Admit</button>` : `<button class="btn sm primary" data-act="move" data-to="${other}">${otherLabel}</button>`}
-				<button class="btn sm icon ${g.whisper ? "active" : ""}" data-act="whisper" title="Whisper: only this guest hears you — never the stream"><i class="las la-headset"></i></button>
+				<button class="btn sm icon ${g.whisper ? "active" : ""}" data-act="whisper" title="Whisper: only this guest hears you, never the stream"><i class="las la-headset"></i></button>
 				<button class="btn sm icon" data-act="cue" title="Send an on-screen message to this guest"><i class="las la-bullhorn"></i></button>
 				<button class="btn sm icon" data-act="mic" title="Toggle their microphone"><i class="las ${g.micMuted ? "la-microphone-slash" : "la-microphone"}"></i></button>
 				<button class="btn sm icon" data-act="cam" title="Toggle their camera"><i class="las la-video"></i></button>
 				<button class="btn sm icon ${g.recording ? "active" : ""}" data-act="rec" title="Record this guest (saves to this computer)"><i class="las la-dot-circle"></i></button>
-				<button class="btn sm icon ${(g.groups || []).length ? "active" : ""}" data-act="huddle" title="Private huddle: guests in different huddles can't hear each other — producers and the broadcast still get everyone"><i class="las la-user-friends"></i></button>
+				<button class="btn sm icon ${(g.groups || []).length ? "active" : ""}" data-act="huddle" title="Private huddle: guests in different huddles can't hear each other, but producers and the broadcast still get everyone"><i class="las la-user-friends"></i></button>
 				<button class="btn sm" data-act="solo" title="Copy OBS solo link for this guest">Solo link</button>
 				<button class="btn sm icon" data-act="note" title="Private note (only producers see it)"><i class="las la-sticky-note"></i></button>
 				<button class="btn sm icon danger" data-act="kick" title="Disconnect this guest"><i class="las la-times"></i></button>
@@ -1391,7 +1395,7 @@
 		badge.classList.toggle("show", waiting > 0);
 		$("cntGreen").textContent = $("cntGreenTab").textContent = green.length;
 		$("cntMain").textContent = $("cntMainTab").textContent = main.length;
-		refreshMonitors(); // runs every poll — guest video comes up a beat after the card
+		refreshMonitors(); // runs every poll, since guest video comes up a beat after the card
 
 		const snap = JSON.stringify([green, main]);
 		if (snap === lastSnapshot) return; // avoid pointless re-render (keeps buttons clickable)
@@ -1407,7 +1411,7 @@
 
 	/* ================= LIVE MONITOR STRIP ================= */
 	// Mirror each connected guest's inbound MediaStream (held same-origin inside the
-	// hidden director engines) into a small muted <video> on the Overview. Video only —
+	// hidden director engines) into a small muted <video> on the Overview. Video only,
 	// audio monitoring stays on the Listen button, so nothing here can leak to the mix.
 	const monTiles = new Map(); // sid -> { wrap, video, stream, label, room, queued }
 
@@ -1484,7 +1488,7 @@
 		$("cntMon").textContent = want.length;
 		strip.querySelector(".emptyNote") && (strip.querySelector(".emptyNote").style.display = want.length ? "none" : "block");
 		if (!want.length && !strip.querySelector(".emptyNote")) {
-			strip.innerHTML = '<div class="emptyNote">Guests\' live video appears here the moment they connect — no need to open a room tab.</div>';
+			strip.innerHTML = '<div class="emptyNote">Guests\' live video appears here the moment they connect, so there\'s no need to open a room tab.</div>';
 		}
 	}
 
@@ -1503,7 +1507,7 @@
 			clickDirectorButton(frame, sid, "remove-queue");
 			Studio.toast("Guest admitted to the green room");
 			// Hold-queue guests stay invisible to OBS scene & solo viewers even after being
-			// activated — a same-room transfer forces a clean rejoin (VDO strips the hold
+			// activated, so a same-room transfer forces a clean rejoin (VDO strips the hold
 			// flag on transfer), which re-seeds them for every viewer. Guests just see a
 			// brief reconnect while still on the waiting-room overlay.
 			setTimeout(() => Studio.send(frame, { action: "transfer", target: sid, value: EV.green }), 1200);
@@ -1524,7 +1528,7 @@
 				fn: () => {
 					const joining = !g.groups.includes(n);
 					if (setGuestGroup(frame, uuid, n, joining)) {
-						Studio.toast(joining ? "Added to huddle " + n + " — they only hear their huddle now" : "Removed from huddle " + n);
+						Studio.toast(joining ? "Added to huddle " + n + ": they only hear their huddle now" : "Removed from huddle " + n);
 					}
 					setTimeout(refreshGuests, 500);
 				}
@@ -1556,16 +1560,16 @@
 			Studio.send(frame, { action: "video", target: sid });
 			Studio.toast("Toggled guest camera");
 		} else if (act === "rec") {
-			if (toggleRecord(frame, sid)) Studio.toast("Toggled recording — files save to this computer's downloads");
-			else Studio.toast("Recording not available yet — is their video up?", true);
+			if (toggleRecord(frame, sid)) Studio.toast("Toggled recording. Files save to this computer's downloads");
+			else Studio.toast("Recording not available yet. Is their video up?", true);
 		} else if (act === "solo") {
 			const g = (inGreen ? lastGreen : lastMain).find(x => x.sid === sid);
 			if (g && g.queued) {
-				Studio.toast("They're still in the waiting room — admit them first, then copy the solo link", true);
+				Studio.toast("They're still in the waiting room. Admit them first, then copy the solo link", true);
 				return;
 			}
 			const ok = await Studio.copyText(soloLink(sid, inGreen ? EV.green : EV.main));
-			Studio.toast(ok ? "Solo link copied for the " + (inGreen ? "green room" : "broadcast") + " — re-copy it if they change rooms" : "Copy failed", !ok);
+			Studio.toast(ok ? "Solo link copied for the " + (inGreen ? "green room" : "broadcast") + ". Re-copy it if they change rooms" : "Copy failed", !ok);
 		} else if (act === "kick") {
 			if (!confirm("Disconnect this guest?")) return;
 			Studio.send(frame, { action: "hangup", target: sid });
@@ -1594,7 +1598,7 @@
 			return true;
 		} catch (e) {
 			console.warn(e);
-			Studio.toast("Couldn't change huddles — is the guest still connected?", true);
+			Studio.toast("Couldn't change huddles. Is the guest still connected?", true);
 			return false;
 		}
 	}
@@ -1609,7 +1613,7 @@
 				}
 			}
 		} catch (e) { console.warn(e); }
-		Studio.toast("Couldn't reach that control — try the full director view", true);
+		Studio.toast("Couldn't reach that control. Try the full director view", true);
 		return false;
 	}
 
@@ -1625,7 +1629,7 @@
 		saveEvent();
 		renderEventInfo();
 		mountDirectors();
-		Studio.toast("Saved — rooms reconnected. Re-copy any links you had shared!");
+		Studio.toast("Saved, rooms reconnected. Re-copy any links you had shared!");
 	});
 
 	$("newEventBtn").addEventListener("click", () => {
@@ -1636,7 +1640,7 @@
 		saveEvent();
 		renderEventInfo();
 		mountDirectors();
-		Studio.toast("Fresh rooms ready — copy the new guest link");
+		Studio.toast("Fresh rooms ready. Copy the new guest link");
 	});
 
 	$("genHashBtn").addEventListener("click", async () => {
@@ -1648,7 +1652,7 @@
 	});
 	$("copyHashBtn").addEventListener("click", async () => {
 		await Studio.copyText($("hashSnippet").textContent);
-		Studio.toast("Copied — paste it into studio/config.js on your server");
+		Studio.toast("Copied. Paste it into studio/config.js on your server");
 	});
 
 	/* ================= BOOT ================= */

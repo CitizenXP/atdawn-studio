@@ -1,5 +1,5 @@
 /*
-	At Dawn Studio — deployment configuration
+	At Dawn Studio: deployment configuration
 	=========================================
 	This is the ONLY file you need to edit when deploying.
 
@@ -24,7 +24,7 @@ window.STUDIO_CONFIG = {
 
 	// Defaults used the first time the dashboard runs (editable in Settings).
 	// Leave the room fields empty: the dashboard then generates unguessable random
-	// room names and a random password on first run — important because this file
+	// room names and a random password on first run. This matters because this file
 	// is public if you host the repo publicly (which the AGPL license encourages).
 	defaults: {
 		eventName: "At Dawn Live",

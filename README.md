@@ -20,7 +20,7 @@ everything from a single dashboard.
   camera / record / solo link / notes / kick, and one-click copy for every link you need.
 - **Producer comms that never reach the stream:** Listen and Talk per room, IFB-style
   whisper to one guest, on-screen cues and countdown timers.
-- **Live monitors** — a video thumbnail of every connected guest, right on the Overview.
+- **Live monitors**: a video thumbnail of every connected guest, right on the Overview.
 - **OBS-ready outputs:** auto-mixed room scenes and per-guest solo feeds as browser sources.
 - Noise gate, pro audio, on-air tally, private chat, live captions, branded standby slate,
   auto-record, huddles, and Stream Deck / Companion remote control.
@@ -33,7 +33,7 @@ Everything At Dawn Studio adds is in the [`studio/`](studio/) folder:
 
 | File | Purpose |
 |---|---|
-| `studio/index.html` | Landing page — Guest or Producer |
+| `studio/index.html` | Landing page, Guest or Producer |
 | `studio/join.html` | Guest flow: name, camera, waiting room, on-air controls |
 | `studio/admin.html` | Password-protected control room |
 | `studio/config.js` · `common.js` · `studio.css` | Config, shared helpers, styling |
@@ -53,7 +53,7 @@ folder. It commits, pushes, and keeps Pages enabled. See
 
 ---
 
-## Built on VDO.Ninja — credit & license
+## Built on VDO.Ninja: credit & license
 
 At Dawn Studio is a wrapper around **[VDO.Ninja](https://vdo.ninja)**, created by
 **[Steve Seguin](https://github.com/steveseguin)**. All of the real-time peer-to-peer video
