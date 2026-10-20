@@ -1,8 +1,12 @@
-# At Dawn Studio: a producer wrapper for VDO.Ninja
+# Control Room: a producer wrapper for VDO.Ninja
 
 A button-driven control room and a Zoom-simple guest experience, layered on top of a
 self-hosted [VDO.Ninja](https://vdo.ninja). **No VDO.Ninja source files are modified**:
 everything lives in this `/studio/` folder, so you can update VDO.Ninja itself at any time.
+
+It is built to be re-skinned. The product name and the entire colour scheme come from
+two lines of `config.js`, so one codebase can run several differently branded shows.
+This deployment is configured as **At Dawn Studio**; see [Branding and themes](#branding-and-themes).
 
 ## License & credits
 
@@ -108,6 +112,67 @@ marked **Control Room**. Turn on *Private chat* in Settings and guests' messages
 to producers, and the panel says so, so nobody types something awkward assuming privacy that
 isn't there.
 
+## Recording (the Riverside-style part)
+
+There are **two** recordings, and the difference matters.
+
+| | Studio recording | Safety copy |
+|---|---|---|
+| Where it runs | the **guest's** computer | **your** computer |
+| What it captures | their raw camera and mic | the stream after it crossed the internet |
+| Affected by a bad connection | **no** | yes: artefacts and dropped frames are baked in |
+| Where the file ends up | their Downloads folder | your Downloads folder |
+| How you start it | **Studio recordings** panel on the Overview | the small record button on a guest card |
+
+Record both. The studio recording is your master; the safety copy is what saves you
+when a guest closes their laptop before sending you anything.
+
+### Running it
+
+1. Pick a quality in the **Studio recordings** panel. 8 Mbps is the sensible default
+   for a talking-head podcast; 16 Mbps if you plan to crop or punch in.
+2. Press **Start recording everyone**. Each guest's browser begins recording their own
+   camera and mic, and shows them a red **REC** pill so nobody is recorded unawares.
+3. The panel then shows, per guest, whether they are *actually* recording and for how
+   long. That status is **reported by the guest**, not assumed by the dashboard: if it
+   says Recording, something on their machine said so.
+4. The session stays **ARMED** until you press stop. Anyone who joins late starts
+   recording automatically, and so does anyone whose recording dies, which is what
+   happens when a guest refreshes the page mid-show. You do not have to notice.
+5. Press **Stop recording everyone** at the end. Each guest is told the file is in
+   their Downloads folder and asked to send it to you.
+
+### Getting the files into your editor
+
+Recordings arrive as `.webm`. The video inside is already H.264, so turning them into
+editable MP4s is a stream copy that takes seconds rather than a re-encode that takes
+hours. Drop the files in a folder and run:
+
+```powershell
+.\studio\tools\convert-recordings.ps1 -Path C:\path\to\the\webm\files
+```
+
+That writes H.264 + AAC MP4s into a `converted` subfolder, which Premiere, Resolve and
+Final Cut all open directly. It needs ffmpeg (`winget install Gyan.FFmpeg`). The audio
+is converted from Opus to AAC because editors refuse Opus inside an MP4; the video is
+never re-encoded, so nothing is lost.
+
+### Things worth knowing before you rely on this
+
+- **The files are on your guests' machines.** There is no server here to upload them
+  to, which is the one real thing Riverside does that this does not. Tell guests up
+  front that they will need to send you a file afterwards, and check they have done it
+  before they wander off.
+- **A guest who refreshes produces two files**, one per side of the refresh. Both are
+  good; join them in your editor.
+- **Chrome or Edge on a computer.** Safari and iOS recording is unreliable, and the
+  panel will say *Cannot record* rather than pretending. Check this at the sound check,
+  not at the top of the show: the **Re-check** button asks every guest to re-report.
+- **Disk space.** 8 Mbps is roughly 1 GB per guest per 17 minutes. A two-hour show is
+  about 7 GB each. Ask guests to check before you start.
+- Closing the tab mid-recording now warns the guest first, but it will still truncate
+  the take if they insist.
+
 ## Guest Links: permanent, preloadable links (Guest Links tab)
 
 For repeat events you can build everything **before** show day instead of copying links
@@ -198,6 +263,33 @@ after changing them:
   [Bitfocus Companion](https://bitfocus.io/companion) "VDO.Ninja" module, one instance
   per room, and drive mutes, transfers, scenes and more from physical Stream Deck
   buttons. The control room tab must stay open for commands to work.
+
+## Branding and themes
+
+Everything that makes this look like a particular show lives in two fields of
+`studio/config.js`:
+
+```js
+brandName: "At Dawn Studio",   // shown on every page, baked into guest invites
+theme:     "atdawn",           // loads studio/themes/atdawn.css
+```
+
+Set `theme` to `""` and you get the neutral slate-and-blue look built into
+`studio.css`: no sunrise glow, no gradient brandmark, nothing that reads as a brand.
+That is the starting point for a new show.
+
+### Making a spin-off
+
+1. Copy `studio/themes/atdawn.css` to `studio/themes/yourshow.css`.
+2. Change the tokens in it. The whole palette is driven by `--accent` and
+   `--accent-rgb` (the same colour twice, once as hex and once as `r, g, b` so it can
+   be used inside `rgba()`), plus `--accent-grad`, `--page-glow`, `--brandmark-inset`
+   and the two cue-banner colours.
+3. Set `brandName` and `theme` in `config.js`.
+
+That is the whole job. `studio.css` holds layout and components and is never forked,
+so a fix to the control room benefits every spin-off. There is a full token reference
+in `studio/themes/README.md`.
 
 ## Deploying
 

@@ -1,13 +1,21 @@
 /*
-	At Dawn Studio: deployment configuration
-	=========================================
-	This is the ONLY file you need to edit when deploying.
+	Control Room: deployment configuration
+	======================================
+	This is the ONLY file you need to edit when deploying, and the only file a
+	spin-off has to change to look like its own product.
+
+	brandName:
+		The product name shown on every page. Change it and the whole UI follows.
+
+	theme:
+		Which themes/<name>.css to load on top of the neutral default built into
+		studio.css. "" or "default" = the neutral slate-and-blue look.
+		See studio/themes/README.md for how to make your own.
 
 	adminPasswordHash:
-		SHA-256 hex of the producer/admin password.
-		The default password is:  atdawn2026
-		To change it, open admin.html -> Settings -> "Change admin password",
-		which generates the new hash for you to paste below.
+		SHA-256 hex of the producer/admin password. Set your own before your first
+		real event: admin.html -> Settings -> "Change admin password" generates the
+		hash to paste below. Only the hash lives here, never the password.
 
 	vdoPath:
 		Path from the /studio/ folder to the VDO.Ninja install.
@@ -17,6 +25,10 @@
 window.STUDIO_CONFIG = {
 	brandName: "At Dawn Studio",
 	tagline: "Remote Guest Green Room & Broadcast Control",
+
+	// "" or "default" for the neutral look; otherwise loads themes/<theme>.css
+	theme: "atdawn",
+
 	vdoPath: "../",
 
 	// SHA-256 of the admin password (set via admin.html -> Settings -> "Change admin password")

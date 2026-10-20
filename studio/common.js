@@ -1,4 +1,4 @@
-/* At Dawn Studio: shared helpers (no dependencies) */
+/* Control Room: shared helpers (no dependencies) */
 "use strict";
 
 const Studio = (() => {

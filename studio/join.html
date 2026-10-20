@@ -6,6 +6,8 @@
 <title>Join the Show</title>
 <link rel="stylesheet" href="../lineawesome/css/line-awesome.min.css" />
 <link rel="stylesheet" href="studio.css" />
+<script src="config.js"></script>
+<script src="theme.js"></script>
 <style>
 	body { min-height: 100vh; display: flex; flex-direction: column; }
 
@@ -44,7 +46,7 @@
 	#waitOverlay {
 		position: absolute; inset: 0; display: flex; flex-direction: column; gap: 16px;
 		align-items: center; justify-content: center; text-align: center;
-		background: radial-gradient(600px 300px at 50% 30%, rgba(246, 167, 92, 0.07), transparent 70%), rgba(7, 9, 14, 0.6);
+		background: radial-gradient(600px 300px at 50% 30%, rgba(var(--accent-rgb), 0.07), transparent 70%), rgba(7, 9, 14, 0.6);
 		backdrop-filter: blur(3px);
 		pointer-events: none; padding: 24px; transition: opacity 0.4s; z-index: 20;
 	}
@@ -53,7 +55,7 @@
 	#waitOverlay .sunrise {
 		width: 58px; height: 58px; border-radius: 50%;
 		background: var(--accent-grad);
-		box-shadow: 0 0 50px rgba(246, 167, 92, 0.55), 0 0 120px rgba(239, 100, 97, 0.25);
+		box-shadow: 0 0 50px rgba(var(--accent-rgb), 0.55), 0 0 120px rgba(var(--accent-2-rgb), 0.25);
 		animation: breathe 2.8s ease-in-out infinite;
 	}
 	@keyframes breathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
@@ -61,9 +63,9 @@
 	/* ----- cue banner & timer ----- */
 	#cueBanner {
 		position: absolute; top: 18px; left: 50%; transform: translate(-50%, -90px);
-		background: rgba(30, 24, 14, 0.88);
-		border: 1px solid rgba(246, 167, 92, 0.5);
-		color: #ffd9ad;
+		background: var(--cue-bg);
+		border: 1px solid rgba(var(--accent-rgb), 0.5);
+		color: var(--cue-text);
 		padding: 14px 28px; border-radius: var(--r-md);
 		font-size: 1.02rem; font-weight: 650;
 		box-shadow: var(--shadow-2), var(--glow-accent);
@@ -127,7 +129,7 @@
 	.ctl span.lbl { font-size: 0.62rem; color: var(--text-dim); font-weight: 700; letter-spacing: 0.08em; }
 	.ctl.off .bubble { background: var(--live-soft); border-color: rgba(255, 87, 87, 0.45); color: #ff8f8f; }
 	.ctl.off span.lbl { color: #ff8f8f; }
-	.ctl.on .bubble { background: var(--accent-soft); border-color: rgba(246, 167, 92, 0.55); color: var(--accent); box-shadow: var(--glow-accent); }
+	.ctl.on .bubble { background: var(--accent-soft); border-color: rgba(var(--accent-rgb), 0.55); color: var(--accent); box-shadow: var(--glow-accent); }
 	.ctl.on span.lbl { color: var(--accent); }
 	.dockdiv { width: 1px; height: 40px; background: var(--line); margin: 0 4px; }
 	.ctl.leave .bubble { background: var(--live); border-color: var(--live); color: #fff; }
@@ -143,6 +145,26 @@
 		font-size: 3rem; font-weight: 800; letter-spacing: 0.08em;
 		color: #fff; text-shadow: 0 4px 40px rgba(0, 0, 0, 0.65);
 	}
+	/* ----- local recording indicator ----- */
+	#recPill {
+		display: none; align-items: center; gap: 8px;
+		height: 30px; padding: 0 13px; border-radius: 999px;
+		background: var(--live-soft); border: 1px solid rgba(255, 87, 87, 0.5);
+		color: #ff8f8f; font-size: 0.72rem; font-weight: 800; letter-spacing: 0.07em;
+	}
+	#recPill.on { display: inline-flex; }
+	#recPill .rdot { width: 9px; height: 9px; border-radius: 50%; background: var(--live); animation: pulse 1.1s infinite; flex: none; }
+	#recSaved {
+		position: absolute; left: 50%; bottom: 108px; transform: translate(-50%, 14px);
+		background: rgba(10, 16, 12, 0.93); border: 1px solid rgba(67, 217, 154, 0.45);
+		color: #9ff0cb; padding: 13px 22px; border-radius: var(--r-md);
+		font-size: 0.9rem; line-height: 1.5; max-width: min(86%, 560px); text-align: center;
+		box-shadow: var(--shadow-2); backdrop-filter: blur(12px);
+		opacity: 0; pointer-events: none; z-index: 62;
+		transition: transform 0.4s var(--ease), opacity 0.4s var(--ease);
+	}
+	#recSaved.show { opacity: 1; transform: translate(-50%, 0); }
+
 	/* ----- chat drawer (our own, VDO's chat panel stays hidden) ----- */
 	#chatPanel {
 		position: absolute; top: 0; right: 0; bottom: 0; width: 330px; max-width: 88vw;
@@ -173,9 +195,9 @@
 	}
 	.msg.me { align-self: flex-end; }
 	.msg.me .nm { text-align: right; color: var(--accent); }
-	.msg.me .bd { background: var(--accent-soft); border-color: rgba(246, 167, 92, 0.4); }
+	.msg.me .bd { background: var(--accent-soft); border-color: rgba(var(--accent-rgb), 0.4); }
 	.msg.dir .nm { color: var(--accent); }
-	.msg.dir .bd { border-color: rgba(246, 167, 92, 0.35); background: rgba(246, 167, 92, 0.07); }
+	.msg.dir .bd { border-color: rgba(var(--accent-rgb), 0.35); background: rgba(var(--accent-rgb), 0.07); }
 	.msg.sys { align-self: center; max-width: 100%; }
 	.msg.sys .nm { display: none; }
 	.msg.sys .bd { background: none; border: none; padding: 2px 0; text-align: center; font-size: 0.76rem; color: var(--text-faint); }
@@ -187,7 +209,7 @@
 		font-size: 0.9rem; font-family: inherit;
 	}
 	.chatRow input::placeholder { color: var(--text-faint); }
-	.chatRow input:focus { outline: none; border-color: rgba(246, 167, 92, 0.55); box-shadow: 0 0 0 3px rgba(246, 167, 92, 0.15); }
+	.chatRow input:focus { outline: none; border-color: rgba(var(--accent-rgb), 0.55); box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.15); }
 	#chatDot {
 		position: absolute; top: -1px; right: -1px; width: 12px; height: 12px;
 		border-radius: 50%; background: var(--accent); border: 2px solid #0d1119;
@@ -214,7 +236,7 @@
 <!-- ============ LOBBY ============ -->
 <div id="lobby">
 	<div class="card lobbyCard">
-		<div class="brandmark"><span class="sun"></span> <span id="brandName">At Dawn Studio</span></div>
+		<div class="brandmark"><span class="sun"></span> <span id="brandName">Control Room</span></div>
 		<div class="eventName" id="eventName">Live Event</div>
 		<div class="muted small">You've been invited to join as a remote guest.</div>
 		<div class="steps">
@@ -222,7 +244,7 @@
 			<div class="step"><i class="las la-video"></i><span>Camera check</span></div>
 			<div class="step"><i class="las la-couch"></i><span>Waiting room</span></div>
 		</div>
-		<div id="paNote" class="small hidden" style="margin: -6px 0 18px 0; padding: 10px 14px; border: 1px solid rgba(246,167,92,0.35); border-radius: var(--r-sm); background: var(--accent-soft); color: var(--accent); line-height: 1.5;"><i class="las la-headphones"></i> This show uses studio-quality audio. Please wear headphones to avoid echo.</div>
+		<div id="paNote" class="small hidden" style="margin: -6px 0 18px 0; padding: 10px 14px; border: 1px solid rgba(var(--accent-rgb), 0.35); border-radius: var(--r-sm); background: var(--accent-soft); color: var(--accent); line-height: 1.5;"><i class="las la-headphones"></i> This show uses studio-quality audio. Please wear headphones to avoid echo.</div>
 		<div class="field">
 			<label for="guestName">Your name (shown on screen)</label>
 			<input type="text" id="guestName" maxlength="40" placeholder="e.g. Jane Smith" autocomplete="name" />
@@ -239,9 +261,10 @@
 <!-- ============ CALL ============ -->
 <div id="call" class="hidden">
 	<div id="topbar">
-		<div class="brandmark"><span class="sun"></span> <span id="brandName2">At Dawn Studio</span></div>
+		<div class="brandmark"><span class="sun"></span> <span id="brandName2">Control Room</span></div>
 		<div class="spacer"></div>
 		<span id="statusMsg"></span>
+		<span id="recPill" title="Your computer is recording this session at full quality"><span class="rdot"></span> REC</span>
 		<span class="pill waiting" id="statusPill"><span class="dot"></span><span id="statusPillText">CONNECTING</span></span>
 	</div>
 	<div id="stage">
@@ -254,6 +277,7 @@
 		</div>
 		<div id="cueBanner"><span class="from" id="cueFrom"></span><span id="cueText"></span></div>
 		<div id="cueTimer"><div class="t" id="cueTimerVal">0:00</div><div class="lbl">time left</div></div>
+		<div id="recSaved"></div>
 
 		<div id="chatPanel">
 			<div class="chatHead">
@@ -297,7 +321,7 @@
 <!-- ============ LEFT ============ -->
 <div id="leftScreen" class="hidden">
 	<div class="card lobbyCard" style="text-align:center">
-		<div class="brandmark" style="justify-content:center"><span class="sun"></span> <span id="brandName3">At Dawn Studio</span></div>
+		<div class="brandmark" style="justify-content:center"><span class="sun"></span> <span id="brandName3">Control Room</span></div>
 		<h2 style="margin-top:20px">You've left the show</h2>
 		<p class="muted">Thanks for joining us! If you left by mistake you can rejoin below.</p>
 		<button class="btn primary" onclick="location.reload()" style="margin-top:12px"><i class="las la-redo-alt"></i> Rejoin</button>
@@ -306,7 +330,6 @@
 
 <div id="liveFlash"><div>&#128308; YOU'RE LIVE</div></div>
 
-<script src="config.js"></script>
 <script src="common.js"></script>
 <script>
 "use strict";
@@ -652,6 +675,9 @@
 			const rawLabel = c.label ? String(c.label) : "";
 			const from = rawLabel.replace(/<[^>]*>/g, "").replace(/:\s*$/, "").trim();
 			const mine = c.type === "sent";
+			// control tokens from the control room never reach the chat log
+			if (!mine && /^⏺(REC|STAT)\b/.test(raw)) { handleRecControl(raw); return; }
+			if (mine && /^⏺(REC|STAT)\b/.test(raw)) return; // our own status echo
 			const timerMatch = raw.match(/^⏱ TIMER (\d+)/);
 			if (!mine && timerMatch) startCueTimer(parseInt(timerMatch[1], 10));
 			else if (!mine && /^📣/.test(raw)) showCue(raw.replace(/^📣\s*/, ""), from);
@@ -662,6 +688,155 @@
 			else if (raw) addChatMsg(raw, mine ? "You" : from, mine, /chat_director/.test(rawLabel));
 		}
 	});
+
+	/* ---------- local recording (the Riverside-style bit) ----------
+	   This records the guest's OWN camera and mic, on the guest's OWN machine, at
+	   full source quality. It is NOT the stream the control room receives: nothing
+	   here travels over the network first, so a bad connection degrades the live
+	   call but cannot touch the recording.
+
+	   VDO.Ninja already implements the hard part (recordLocalVideo -> MediaRecorder
+	   -> StreamSaver, streamed straight to disk so a two-hour show doesn't sit in
+	   RAM). It just has no way for a director to drive it remotely, so we do that
+	   ourselves: the control room sends a token over the director chat channel and
+	   we call VDO's own function same-origin. No VDO source files are modified.
+
+	   The finished file lands in the GUEST's downloads folder. They have to send it
+	   to the producer afterwards; we say so plainly on screen when it stops. */
+	let recOn = false, recStartedAt = 0;
+
+	function recWindow() {
+		try {
+			const w = iframe.contentWindow;
+			return (w && w.session) ? w : null;
+		} catch (e) { return null; }
+	}
+
+	function recSupported(w) {
+		try {
+			if (!w || typeof w.recordLocalVideoToggle !== "function") return "not ready";
+			if (typeof w.MediaRecorder === "undefined") return "this browser can't record";
+			if (!w.session.videoElement) return "no camera yet";
+			const st = w.session.videoElement.srcObject;
+			if (!st || !st.getTracks || !st.getTracks().length) return "no camera yet";
+			return null;
+		} catch (e) { return "not ready"; }
+	}
+
+	function recIsRunning(w) {
+		try {
+			const el = w.document.getElementById("recordLocalbutton");
+			if (el && el.dataset.state === "1") return true;
+			return !!(w.session.videoElement && "recording" in w.session.videoElement);
+		} catch (e) { return false; }
+	}
+
+	function setLocalRec(on, kbps) {
+		const w = recWindow();
+		const why = recSupported(w);
+		if (why) { recReport("fail", why); return; }
+		const running = recIsRunning(w);
+		try {
+			if (on && !running) {
+				// set the bitrate directly rather than via &record=, which pops a
+				// blocking browser alert on Safari/iOS before the guest even joins
+				if (kbps !== undefined && kbps !== null && !isNaN(kbps)) w.session.recordLocal = kbps;
+
+				// Record H.264 when the browser can. The container is still .webm (VDO picks
+				// the extension and we do not patch VDO), but the video inside is H.264, so
+				// turning the take into an editable .mp4 afterwards is a stream copy that
+				// finishes in seconds instead of a full re-encode of a two-hour show.
+				// If the browser says no, VDO falls back to its normal VP8/VP9 webm.
+				try {
+					if (typeof w.MediaRecorder !== "undefined" &&
+						w.MediaRecorder.isTypeSupported("video/webm;codecs=h264")) {
+						w.session.recordingVideoCodec = "h264";
+					}
+				} catch (e) {}
+				w.recordLocalVideoToggle(true); // startonly: never toggles OFF a running take
+				recOn = true; recStartedAt = Date.now();
+				showRecSaved("");
+				recReport("on");
+			} else if (!on && running) {
+				w.recordLocalVideoToggle();
+				recOn = false;
+				const mins = Math.max(1, Math.round((Date.now() - recStartedAt) / 60000));
+				showRecSaved("Recording saved to this computer (about " + mins + " min). " +
+					"Check your Downloads folder and send the file to the producer.");
+				recReport("off");
+			} else {
+				recOn = running;
+				recReport(running ? "on" : "off");
+			}
+		} catch (e) {
+			recOn = false;
+			recReport("fail", (e && e.message) ? e.message.slice(0, 60) : "recorder error");
+		}
+		renderRecPill();
+	}
+
+	function renderRecPill() {
+		$("recPill").classList.toggle("on", !!recOn);
+	}
+
+	let recSavedTimer = null;
+	function showRecSaved(text) {
+		const el = $("recSaved");
+		clearTimeout(recSavedTimer);
+		if (!text) { el.classList.remove("show"); return; }
+		el.textContent = text;
+		el.classList.add("show");
+		recSavedTimer = setTimeout(() => el.classList.remove("show"), 15000);
+	}
+
+	// tell the control room what actually happened, so its board shows truth
+	function recReport(state, detail) {
+		try {
+			const w = recWindow();
+			if (!w || typeof w.sendChatMessage !== "function") return;
+			w.sendChatMessage("\u23FASTAT " + state + (detail ? " " + detail : ""));
+		} catch (e) {}
+	}
+
+	function handleRecControl(raw) {
+		const m = raw.match(/^\u23FAREC\s+(START|STOP|PING)(?:\s+(\d+))?/i);
+		if (!m) return;
+		const cmd = m[1].toUpperCase();
+		if (cmd === "START") setLocalRec(true, m[2] ? parseInt(m[2], 10) : undefined);
+		else if (cmd === "STOP") setLocalRec(false);
+		else { // PING: the board is asking whether we are actually rolling
+			const w = recWindow();
+			const running = w ? recIsRunning(w) : false;
+			recOn = running;
+			renderRecPill();
+			const why = w ? recSupported(w) : "not ready";
+			recReport(running ? "on" : (why ? "fail" : "off"), running ? "" : (why || ""));
+		}
+	}
+
+	// Closing the tab mid-take truncates the file, and the guest has no idea that
+	// matters. The browser only honours this if they have interacted with the page,
+	// which by this point they always have (they pressed START).
+	window.addEventListener("beforeunload", function (e) {
+		if (!recOn) return;
+		e.preventDefault();
+		e.returnValue = "";
+		return "";
+	});
+
+	// if a recording stops on its own (disk full, tab throttled, track ended), the
+	// pill must stop lying. Poll VDO's own state rather than trusting our flag.
+	setInterval(() => {
+		const w = recWindow();
+		if (!w) return;
+		const running = recIsRunning(w);
+		if (running !== recOn) {
+			recOn = running;
+			renderRecPill();
+			recReport(running ? "on" : "off");
+			if (!running) showRecSaved("Recording stopped. Check your Downloads folder for the file.");
+		}
+	}, 4000);
 
 	/* ---------- chat drawer ----------
 	   We drive VDO's own chat engine (same-origin sendChatMessage, so the producer's

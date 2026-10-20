@@ -1,9 +1,13 @@
 /* ============================================================
-   At Dawn Studio: design system v2
-   Layered dark theme · sunrise accent · Line Awesome icons
+   Control Room: design system
+   Structure + the NEUTRAL default theme. Everything brand-facing
+   lives in the :root tokens below, so a spin-off never edits this
+   file: it ships a themes/<name>.css that re-declares the tokens
+   it wants, and names that theme in config.js.
    ============================================================ */
 :root {
-	--bg: #07090e;
+	/* --- surfaces & text --- */
+	--bg: #0b0e14;
 	--surface: linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.018));
 	--surface-2: rgba(255, 255, 255, 0.055);
 	--line: rgba(255, 255, 255, 0.08);
@@ -11,10 +15,25 @@
 	--text: #f2f5fa;
 	--text-dim: #8d97a9;
 	--text-faint: #5c6678;
-	--accent: #f6a75c;
-	--accent-2: #ef6461;
-	--accent-grad: linear-gradient(135deg, #f8b46b 0%, #ef6461 100%);
-	--accent-soft: rgba(246, 167, 92, 0.14);
+
+	/* --- brand accent. Themes override these five and little else. --- */
+	--accent: #5b9dff;
+	--accent-2: #7fadff;
+	--accent-rgb: 91, 157, 255;    /* same colour as --accent, for rgba() */
+	--accent-2-rgb: 127, 173, 255; /* same colour as --accent-2 */
+	--accent-grad: linear-gradient(135deg, #5b9dff 0%, #7fadff 100%);
+	--accent-soft: rgba(var(--accent-rgb), 0.14);
+	--glow-accent: 0 0 24px rgba(var(--accent-rgb), 0.35);
+
+	/* --- brandmark dot and page wash. Neutral default: flat, no glow. --- */
+	--brandmark-inset: transparent;
+	--page-glow: none;
+
+	/* --- cue banner (the big on-screen message guests see) --- */
+	--cue-bg: rgba(16, 22, 34, 0.9);
+	--cue-text: #d8e6ff;
+
+	/* --- status colours. Semantic, not brand: themes rarely touch these. --- */
 	--good: #43d99a;
 	--good-soft: rgba(67, 217, 154, 0.12);
 	--warn: #f5c15a;
@@ -22,12 +41,13 @@
 	--live: #ff5757;
 	--live-soft: rgba(255, 87, 87, 0.13);
 	--focus: #7fadff;
+
+	/* --- shape & motion --- */
 	--r-sm: 10px;
 	--r-md: 14px;
 	--r-lg: 20px;
 	--shadow-1: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.35);
 	--shadow-2: 0 2px 6px rgba(0, 0, 0, 0.45), 0 24px 60px rgba(0, 0, 0, 0.5);
-	--glow-accent: 0 0 24px rgba(246, 167, 92, 0.35);
 	--ease: cubic-bezier(0.2, 0.8, 0.2, 1);
 	font-size: 16px;
 }
@@ -35,16 +55,14 @@
 html, body { height: 100%; }
 body {
 	margin: 0;
-	background:
-		radial-gradient(1100px 520px at 12% -12%, rgba(246, 167, 92, 0.08), transparent 62%),
-		radial-gradient(900px 560px at 108% 112%, rgba(108, 138, 255, 0.065), transparent 60%),
-		var(--bg);
+	background-color: var(--bg);
+	background-image: var(--page-glow);
 	color: var(--text);
 	font-family: "Segoe UI Variable Text", "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
 	-webkit-font-smoothing: antialiased;
 	text-rendering: optimizeLegibility;
 }
-::selection { background: rgba(246, 167, 92, 0.35); }
+::selection { background: rgba(var(--accent-rgb), 0.35); }
 
 a { color: var(--accent); text-decoration: none; }
 a:hover { text-decoration: underline; }
@@ -82,7 +100,7 @@ hr.sep { border: none; border-top: 1px solid var(--line); margin: 18px 0; }
 	width: 26px; height: 26px;
 	border-radius: 50%;
 	background: var(--accent-grad);
-	box-shadow: 0 0 18px rgba(246, 167, 92, 0.55), inset 0 -3px 6px rgba(160, 40, 40, 0.35);
+	box-shadow: 0 0 18px rgba(var(--accent-rgb), 0.55), inset 0 -3px 6px var(--brandmark-inset);
 	flex: none;
 }
 
@@ -114,9 +132,9 @@ hr.sep { border: none; border-top: 1px solid var(--line); margin: 18px 0; }
 	background: var(--accent-grad);
 	border-color: transparent;
 	color: #23120a;
-	box-shadow: 0 4px 18px rgba(239, 100, 97, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+	box-shadow: 0 4px 18px rgba(var(--accent-2-rgb), 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.35);
 }
-.btn.primary:hover { filter: brightness(1.07); box-shadow: 0 6px 24px rgba(239, 100, 97, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.35); }
+.btn.primary:hover { filter: brightness(1.07); box-shadow: 0 6px 24px rgba(var(--accent-2-rgb), 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.35); }
 .btn.danger { background: var(--live-soft); border-color: rgba(255, 87, 87, 0.3); color: #ff9d9d; }
 .btn.danger:hover { background: rgba(255, 87, 87, 0.2); border-color: rgba(255, 87, 87, 0.45); }
 .btn.good { background: var(--good-soft); border-color: rgba(67, 217, 154, 0.3); color: #79e8b6; }
@@ -154,8 +172,8 @@ hr.sep { border: none; border-top: 1px solid var(--line); margin: 18px 0; }
 .field input::placeholder { color: var(--text-faint); }
 .field input:focus {
 	outline: none;
-	border-color: rgba(246, 167, 92, 0.55);
-	box-shadow: 0 0 0 3px rgba(246, 167, 92, 0.15);
+	border-color: rgba(var(--accent-rgb), 0.55);
+	box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.15);
 }
 .field select {
 	width: 100%;
@@ -172,8 +190,8 @@ hr.sep { border: none; border-top: 1px solid var(--line); margin: 18px 0; }
 }
 .field select:focus {
 	outline: none;
-	border-color: rgba(246, 167, 92, 0.55);
-	box-shadow: 0 0 0 3px rgba(246, 167, 92, 0.15);
+	border-color: rgba(var(--accent-rgb), 0.55);
+	box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.15);
 }
 .field select option { background: #10141d; color: var(--text); }
 .checkline {

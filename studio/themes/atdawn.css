@@ -1,0 +1,26 @@
+/* ============================================================
+   Theme: At Dawn
+   The original sunrise identity. Loaded on top of studio.css,
+   so it only re-declares the brand tokens.
+   Select it with  theme: "atdawn"  in config.js.
+   ============================================================ */
+:root {
+	--bg: #07090e;
+
+	--accent: #f6a75c;
+	--accent-2: #ef6461;
+	--accent-rgb: 246, 167, 92;
+	--accent-2-rgb: 239, 100, 97;
+	--accent-grad: linear-gradient(135deg, #f8b46b 0%, #ef6461 100%);
+
+	/* warm inner shading on the brandmark dot: it reads as a rising sun */
+	--brandmark-inset: rgba(160, 40, 40, 0.35);
+
+	/* sunrise wash in the top-left, cool counterweight bottom-right */
+	--page-glow:
+		radial-gradient(1100px 520px at 12% -12%, rgba(246, 167, 92, 0.08), transparent 62%),
+		radial-gradient(900px 560px at 108% 112%, rgba(108, 138, 255, 0.065), transparent 60%);
+
+	--cue-bg: rgba(30, 24, 14, 0.88);
+	--cue-text: #ffd9ad;
+}
