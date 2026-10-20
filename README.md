@@ -8,8 +8,8 @@ running live shows: guests join through one clean link, wait in a branded waitin
 admitted to a green room, and are moved on air with a click, while the producer runs
 everything from a single dashboard.
 
-> **Live app:** https://jokeroker.github.io/atdawn-studio/studio/
-> **Control room:** https://jokeroker.github.io/atdawn-studio/studio/admin.html
+> **Live app:** https://citizenxp.github.io/atdawn-studio/studio/
+> **Control room:** https://citizenxp.github.io/atdawn-studio/studio/admin.html
 
 ---
 
