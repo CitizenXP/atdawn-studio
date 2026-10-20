@@ -153,7 +153,10 @@ hours. Drop the files in a folder and run:
 ```
 
 That writes H.264 + AAC MP4s into a `converted` subfolder, which Premiere, Resolve and
-Final Cut all open directly. It needs ffmpeg (`winget install Gyan.FFmpeg`). The audio
+Final Cut all open directly. **Convert before editing even if your editor will open a
+.webm.** A recording written progressively to disk has no duration in its header, which
+makes editors misreport the length or refuse to scrub; the conversion writes a correct
+one. It needs ffmpeg (`winget install Gyan.FFmpeg`). The audio
 is converted from Opus to AAC because editors refuse Opus inside an MP4; the video is
 never re-encoded, so nothing is lost.
 

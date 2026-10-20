@@ -49,7 +49,8 @@ Control room: `https://citizenxp.github.io/atdawn-studio/studio/admin.html`
 - [ ] **Before anyone leaves**, get each guest to confirm they can see their `.webm`
       file in Downloads. This is the one step with no undo.
 - [ ] Collect the files. A guest who refreshed mid-show has two; you want both.
-- [ ] Convert them:
+- [ ] Convert them. Do this even if your editor opens .webm: the raw files carry no
+      duration in the header, so editors mis-scrub or refuse them.
       `.\studio\tools\convert-recordings.ps1 -Path C:\where\the\files\are`
 
 ---
