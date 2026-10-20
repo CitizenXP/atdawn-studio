@@ -23,11 +23,11 @@
 		You may also use an absolute URL (e.g. "https://vdo.yourdomain.com/").
 */
 window.STUDIO_CONFIG = {
-	brandName: "At Dawn Studio",
+	brandName: "Aebly Media",
 	tagline: "Remote Guest Green Room & Broadcast Control",
 
 	// "" or "default" for the neutral look; otherwise loads themes/<theme>.css
-	theme: "atdawn",
+	theme: "aebly",
 
 	vdoPath: "../",
 

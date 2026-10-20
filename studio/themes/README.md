@@ -34,4 +34,22 @@ Status colours (`--good`, `--warn`, `--live`) are semantic rather than brand:
 green means healthy and red means live in every theme, so leave them alone
 unless you have a reason.
 
+| `--font-ui`, `--font-display`, `--font-mono` | Typefaces. `atdawn` leaves these alone; `aebly` swaps in the brand's own (Sora and EB Garamond, pulled from Google Fonts with `display=swap`, so a slow font server shows fallback text rather than nothing). |
+| `--display-weight`, `--display-spacing` | Weight and tracking for headings, since a serif usually wants different values from a UI sans. |
+
 Set the product name separately, with `brandName` in `config.js`.
+
+## Shipped themes
+
+| Theme | Looks like |
+|---|---|
+| *(none)* | Neutral slate and blue. The brandless default built into `studio.css`. |
+| `atdawn` | Sunrise orange on black. The original At Dawn Studio identity. |
+| `aebly` | Brass on warm near-black, Sora and EB Garamond. Matches aeblymedia.com. |
+
+### A note on taking colours from a website
+
+`aebly.css` was not eyeballed from a screenshot. The values came from the site's own CSS
+custom properties (`--pf-plate-ink` for the gold, `--pf-plate` for the warm plate), which
+is both more accurate and easier to re-check when the brand changes. Every foreground and
+background pair in that theme was then contrast-checked against WCAG AA before shipping.

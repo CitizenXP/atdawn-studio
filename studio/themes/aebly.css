@@ -1,0 +1,51 @@
+/* ============================================================
+   Theme: Aebly Media
+   Brass on near-black, with the cream paper tone their editions
+   use. Values taken from aeblymedia.com's own CSS custom
+   properties rather than guessed from a screenshot:
+       --pf-plate-ink  #d8b26b   the gold
+       --pf-plate      #1b1915   the warm plate
+       --btn-ink       #17150f   ink on gold
+       body background #121214
+   Typefaces are theirs too: Sora for UI, EB Garamond for display.
+
+   Select it with  theme: "aebly"  in config.js.
+   ============================================================ */
+@import url("https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=EB+Garamond:wght@500;600&display=swap");
+
+:root {
+	/* --- surfaces: warm near-black, not the neutral slate --- */
+	--bg: #121214;
+	--surface: linear-gradient(180deg, rgba(255, 248, 232, 0.05), rgba(255, 248, 232, 0.018));
+	--surface-2: rgba(255, 248, 232, 0.06);
+	--line: rgba(255, 255, 255, 0.08);
+	--line-strong: rgba(216, 178, 107, 0.22);
+	--text: #ececef;
+	--text-dim: #b4b4bc;
+	--text-faint: #8a8a95;
+
+	/* --- brass accent --- */
+	--accent: #d8b26b;
+	--accent-2: #9a7b4f;
+	--accent-rgb: 216, 178, 107;
+	--accent-2-rgb: 154, 123, 79;
+	--accent-grad: linear-gradient(135deg, #e8c98d 0%, #9a7b4f 100%);
+	--accent-soft: rgba(216, 178, 107, 0.13);
+	--glow-accent: 0 0 24px rgba(216, 178, 107, 0.3);
+
+	/* a struck-brass look for the brandmark dot */
+	--brandmark-inset: rgba(74, 52, 18, 0.45);
+
+	/* a low warm wash, nothing like the At Dawn sunrise */
+	--page-glow: radial-gradient(1200px 560px at 50% -18%, rgba(216, 178, 107, 0.07), transparent 64%);
+
+	/* cue banner: their plate colour with cream text */
+	--cue-bg: rgba(27, 25, 21, 0.93);
+	--cue-text: #f4ede0;
+
+	/* --- their typefaces --- */
+	--font-ui: "Sora", "Segoe UI", system-ui, -apple-system, sans-serif;
+	--font-display: "EB Garamond", Georgia, "Times New Roman", serif;
+	--display-weight: 600;
+	--display-spacing: 0;
+}

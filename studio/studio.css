@@ -42,6 +42,13 @@
 	--live-soft: rgba(255, 87, 87, 0.13);
 	--focus: #7fadff;
 
+	/* --- typefaces. A theme can swap these; everything inherits. --- */
+	--font-ui: "Segoe UI Variable Text", "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+	--font-display: "Segoe UI Variable Display", "Segoe UI", system-ui, sans-serif;
+	--font-mono: "Cascadia Code", Consolas, "SF Mono", Menlo, monospace;
+	--display-weight: 650;
+	--display-spacing: -0.015em;
+
 	/* --- shape & motion --- */
 	--r-sm: 10px;
 	--r-md: 14px;
@@ -58,7 +65,7 @@ body {
 	background-color: var(--bg);
 	background-image: var(--page-glow);
 	color: var(--text);
-	font-family: "Segoe UI Variable Text", "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+	font-family: var(--font-ui);
 	-webkit-font-smoothing: antialiased;
 	text-rendering: optimizeLegibility;
 }
@@ -68,14 +75,14 @@ a { color: var(--accent); text-decoration: none; }
 a:hover { text-decoration: underline; }
 
 h1, h2, h3 {
-	font-family: "Segoe UI Variable Display", "Segoe UI", system-ui, sans-serif;
-	font-weight: 650;
-	letter-spacing: -0.015em;
+	font-family: var(--font-display);
+	font-weight: var(--display-weight);
+	letter-spacing: var(--display-spacing);
 	margin: 0 0 0.5em 0;
 }
 .muted { color: var(--text-dim); }
 .small { font-size: 0.82rem; }
-.mono { font-family: "Cascadia Code", Consolas, "SF Mono", Menlo, monospace; font-size: 0.82em; letter-spacing: 0; }
+.mono { font-family: var(--font-mono); font-size: 0.82em; letter-spacing: 0; }
 .hidden { display: none !important; }
 hr.sep { border: none; border-top: 1px solid var(--line); margin: 18px 0; }
 

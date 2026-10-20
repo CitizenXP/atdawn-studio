@@ -6,7 +6,7 @@ everything lives in this `/studio/` folder, so you can update VDO.Ninja itself a
 
 It is built to be re-skinned. The product name and the entire colour scheme come from
 two lines of `config.js`, so one codebase can run several differently branded shows.
-This deployment is configured as **At Dawn Studio**; see [Branding and themes](#branding-and-themes).
+This deployment is currently configured as **Aebly Media**; see [Branding and themes](#branding-and-themes).
 
 ## License & credits
 
@@ -273,9 +273,12 @@ Everything that makes this look like a particular show lives in two fields of
 `studio/config.js`:
 
 ```js
-brandName: "At Dawn Studio",   // shown on every page, baked into guest invites
-theme:     "atdawn",           // loads studio/themes/atdawn.css
+brandName: "Aebly Media",   // shown on every page, baked into guest invites
+theme:     "aebly",         // loads studio/themes/aebly.css
 ```
+
+Shipped themes: `atdawn` (sunrise orange), `aebly` (brass, Sora and EB Garamond), or `""`
+for the neutral base. Switching show is two lines and a deploy.
 
 Set `theme` to `""` and you get the neutral slate-and-blue look built into
 `studio.css`: no sunrise glow, no gradient brandmark, nothing that reads as a brand.
