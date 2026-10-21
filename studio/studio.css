@@ -25,8 +25,16 @@
 	--accent-soft: rgba(var(--accent-rgb), 0.14);
 	--glow-accent: 0 0 24px rgba(var(--accent-rgb), 0.35);
 
-	/* --- brandmark dot and page wash. Neutral default: flat, no glow. --- */
+	/* --- brandmark and page wash. Neutral default: a flat dot, no glow. ---
+	   A theme can drop a logo in here instead by setting --brandmark-bg to a
+	   url(), squaring off the radius and clearing the glow. */
 	--brandmark-inset: transparent;
+	--brandmark-bg: var(--accent-grad);
+	--brandmark-radius: 50%;
+	--brandmark-size: 26px;
+	--brandmark-size-lg: 64px;
+	--brandmark-glow: 0 0 18px rgba(var(--accent-rgb), 0.55), inset 0 -3px 6px var(--brandmark-inset);
+	--brandmark-glow-lg: 0 0 60px rgba(var(--accent-rgb), 0.5), 0 0 140px rgba(var(--accent-2-rgb), 0.25), inset 0 -8px 16px var(--brandmark-inset);
 	--page-glow: none;
 
 	/* --- cue banner (the big on-screen message guests see) --- */
@@ -104,10 +112,10 @@ hr.sep { border: none; border-top: 1px solid var(--line); margin: 18px 0; }
 	letter-spacing: -0.01em;
 }
 .brandmark .sun {
-	width: 26px; height: 26px;
-	border-radius: 50%;
-	background: var(--accent-grad);
-	box-shadow: 0 0 18px rgba(var(--accent-rgb), 0.55), inset 0 -3px 6px var(--brandmark-inset);
+	width: var(--brandmark-size); height: var(--brandmark-size);
+	border-radius: var(--brandmark-radius);
+	background: var(--brandmark-bg) center / contain no-repeat;
+	box-shadow: var(--brandmark-glow);
 	flex: none;
 }
 

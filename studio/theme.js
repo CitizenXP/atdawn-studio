@@ -12,4 +12,13 @@
 	link.rel = "stylesheet";
 	link.href = "themes/" + name + ".css";
 	document.head.appendChild(link);
+
+	// optional browser-tab icon, e.g. favicon: "themes/aebly-mark.png"
+	var icon = String(cfg.favicon || "").trim();
+	if (icon && !/^(https?:)?\/\//.test(icon) && icon.indexOf("..") === -1) {
+		var fav = document.createElement("link");
+		fav.rel = "icon";
+		fav.href = icon;
+		document.head.appendChild(fav);
+	}
 })();

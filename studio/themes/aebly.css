@@ -33,8 +33,19 @@
 	--accent-soft: rgba(216, 178, 107, 0.13);
 	--glow-accent: 0 0 24px rgba(216, 178, 107, 0.3);
 
-	/* a struck-brass look for the brandmark dot */
-	--brandmark-inset: rgba(74, 52, 18, 0.45);
+	/* The mark itself is applied in a real rule at the bottom of this file, not
+	   here. A url() inside a custom property is resolved against the DOCUMENT in
+	   Chrome, not against the stylesheet that declares it, so putting it in a token
+	   makes it 404 from themes/. In an ordinary declaration it resolves relative to
+	   this file, which is what we want and is consistent across browsers. */
+	--brandmark-bg: none;
+	--brandmark-radius: 0;
+	--brandmark-glow: none;
+	--brandmark-glow-lg: none;
+	--brandmark-inset: transparent;
+	/* a compass rose needs more room than a plain dot to stay legible */
+	--brandmark-size: 30px;
+	--brandmark-size-lg: 88px;
 
 	/* a low warm wash, nothing like the At Dawn sunrise */
 	--page-glow: radial-gradient(1200px 560px at 50% -18%, rgba(216, 178, 107, 0.07), transparent 64%);
@@ -48,4 +59,10 @@
 	--font-display: "EB Garamond", Georgia, "Times New Roman", serif;
 	--display-weight: 600;
 	--display-spacing: 0;
+}
+
+/* the Aebly compass mark, in place of the plain accent dot */
+:root .brandmark .sun,
+:root .hero-sun {
+	background-image: url("aebly-mark.png");
 }

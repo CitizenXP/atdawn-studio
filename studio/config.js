@@ -29,6 +29,9 @@ window.STUDIO_CONFIG = {
 	// "" or "default" for the neutral look; otherwise loads themes/<theme>.css
 	theme: "aebly",
 
+	// optional browser-tab icon, relative to /studio/
+	favicon: "themes/aebly-mark.png",
+
 	vdoPath: "../",
 
 	// SHA-256 of the admin password (set via admin.html -> Settings -> "Change admin password")
@@ -39,7 +42,7 @@ window.STUDIO_CONFIG = {
 	// room names and a random password on first run. This matters because this file
 	// is public if you host the repo publicly (which the AGPL license encourages).
 	defaults: {
-		eventName: "At Dawn Live",
+		eventName: "Live Show",
 		greenRoom: "",   // "" = auto-generate a random, unguessable room id
 		mainRoom: "",    // "" = auto-generate
 		roomPassword: "", // "" = auto-generate; shared by both rooms (needed for transfers)
