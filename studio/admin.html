@@ -1620,6 +1620,11 @@
 			for (const uuid in w.session.rpcs) {
 				const rpc = w.session.rpcs[uuid];
 				if (!rpc || !rpc.streamID) continue;
+				// producers are not guests: a co-producer's dashboard mounts director
+				// connections into these same rooms, and they must never appear on the board
+				if (String(rpc.streamID).indexOf("dir_") === 0) continue;
+				if (uuid === w.session.directorUUID) continue;
+				if ((w.session.directorList || []).indexOf(uuid) !== -1) continue;
 				// a guest who transferred away (or dropped) can leave a zombie rpc behind until
 				// VDO's cleanup fires, so skip anything whose connection is already dead
 				const cs = rpc.connectionState || "";
