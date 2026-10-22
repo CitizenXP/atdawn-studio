@@ -421,7 +421,7 @@
 				</div>
 				<div class="miniCard">
 					<b><i class="las la-user-shield"></i> Co-producer dashboard</b>
-					<span>This control room. Producers log in with the admin password and get every control on this page.</span>
+					<span>Sends another producer into <b>this</b> show, with every control on this page. They log in with the admin password. Re-copy it if you change rooms.</span>
 					<button class="btn sm" data-copy="admin"><i class="las la-copy"></i> Copy</button>
 				</div>
 				<div class="miniCard">
@@ -669,6 +669,20 @@
 	let EV = null;
 	function loadEvent() {
 		try { EV = JSON.parse(localStorage.getItem(LS_KEY)); } catch (e) {}
+
+		// A co-producer link carries the event. Adopt it, so a second producer joins the
+		// show rather than silently starting one of their own in a random room.
+		try {
+			const shared = Studio.b64uDecode(new URLSearchParams(location.search).get("e") || "");
+			if (shared && shared.green && shared.main) {
+				const joining = !EV || EV.green !== shared.green || EV.main !== shared.main;
+				EV = Object.assign({}, EV || {}, shared);
+				saveEvent();
+				// keep the room password out of the address bar once it is stored
+				history.replaceState(null, "", location.pathname);
+				if (joining) setTimeout(() => Studio.toast("Joined " + (EV.name || "the show") + " as a co-producer"), 600);
+			}
+		} catch (e) {}
 		if (!EV || !EV.green || !EV.main) {
 			const d = CFG.defaults || {};
 			EV = {
@@ -829,6 +843,20 @@
 		return new URL("join.html?e=" + Studio.b64uEncode(payload), location.href).href;
 	}
 	function guestLink() { return buildInvite(); }
+
+	// Everything a second producer needs to be in THIS show. Machine-specific bits are
+	// deliberately left out: apiKey belongs to one Stream Deck, and autoRec would make
+	// their computer start recording guests too.
+	function coProducerLink() {
+		const share = {
+			name: EV.name, green: EV.green, main: EV.main, pwd: EV.pwd, ask: !!EV.ask,
+			tally: EV.tally, recMode: EV.recMode, uploadUrl: EV.uploadUrl || "",
+			labels: !!EV.labels, noiseGate: !!EV.noiseGate, proAudio: !!EV.proAudio,
+			dirChat: !!EV.dirChat, captions: !!EV.captions,
+			waitMsg: EV.waitMsg || "", waitImg: EV.waitImg || ""
+		};
+		return new URL("admin.html?e=" + Studio.b64uEncode(share), location.href).href;
+	}
 	// A named guest gets a STABLE stream id derived from their name, so their OBS solo
 	// link is known before they ever join. gn pre-fills their name on the join page.
 	function rosterSid(name) { return Studio.slugName(name); }
@@ -853,7 +881,7 @@
 	}
 	const LINKS = {
 		guest: () => guestLink(),
-		admin: () => new URL("admin.html", location.href).href,
+		admin: () => coProducerLink(),
 		sceneMain: () => sceneLink(EV.main),
 		sceneGreen: () => sceneLink(EV.green)
 	};
