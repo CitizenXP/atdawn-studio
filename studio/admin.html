@@ -1081,6 +1081,7 @@
 			Studio.toast("Couldn't change monitoring. Try the Advanced view", true);
 			return;
 		}
+		enforceListen(room);
 		if (on && EV.audioOut) applySink(EV.audioOut);
 		if (on) Studio.toast("Listening to " + roomLabel(room) + ": guests aren't told, the stream never hears it");
 		renderListenButtons();
@@ -1189,6 +1190,45 @@
 			Studio.toast("Tone sent to the selected device. Heard it?");
 		} catch (e) { Studio.toast("Couldn't play the test tone", true); }
 	});
+
+	// Keep a room that is being monitored actually audible, including anyone who
+	// arrives or is transferred in after Listen was pressed.
+	function enforceListen(room) {
+		if (!listen[room]) return;
+		let w = null;
+		try { w = frameOf(room).contentWindow; } catch (e) { return; }
+		if (!w || !w.session || !w.session.rpcs) return;
+		try {
+			if (w.session.speakerMuted !== false) w.session.speakerMuted = false;
+			for (const uuid in w.session.rpcs) {
+				const rpc = w.session.rpcs[uuid];
+				if (!rpc || !rpc.streamID) continue;
+				if (String(rpc.streamID).indexOf("dir_") === 0) continue; // never the other producer
+				const ve = rpc.videoElement;
+				if (!ve) continue;
+				if (ve.muted) ve.muted = false;
+				if (ve.paused) { try { ve.play(); } catch (e) {} }
+			}
+		} catch (e) {}
+	}
+	function enforceSilence(room) {
+		if (listen[room]) return;
+		let w = null;
+		try { w = frameOf(room).contentWindow; } catch (e) { return; }
+		if (!w || !w.session || !w.session.rpcs) return;
+		try {
+			for (const uuid in w.session.rpcs) {
+				const rpc = w.session.rpcs[uuid];
+				const ve = rpc && rpc.videoElement;
+				if (ve && !ve.muted) ve.muted = true;
+			}
+		} catch (e) {}
+	}
+	setInterval(function () {
+		if (!EV) return;
+		enforceListen("green"); enforceListen("main");
+		enforceSilence("green"); enforceSilence("main");
+	}, 1500);
 
 	function renderListenButtons() {
 		document.querySelectorAll('[data-tool="listen"]').forEach(btn => {

@@ -648,6 +648,10 @@
 		// PREVIEWING the camera on the device-check screen, so it cannot mean 'started'.
 		// session.seeding is the field that actually flips when the guest presses START.
 		if (s.seeding || started) revealCallChrome(); // belt and braces if the event is missed
+		// VDO raises an OS notification and a tone for every chat line it receives.
+		// Our control tokens travel that way, so guests were getting desktop popups
+		// reading REC PING. We show our own cue banner and chime, so turn VDO's off.
+		if (s.beepToNotify) s.beepToNotify = false;
 		neutralizeDirectorTiles(); // fallback in case the observer missed the tile's creation
 		blockVideoMenu();          // no-op once bound; covers a late or re-navigated frame
 		try {
