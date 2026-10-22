@@ -168,6 +168,11 @@ never re-encoded, so nothing is lost.
   before they wander off.
 - **A guest who refreshes produces two files**, one per side of the refresh. Both are
   good; join them in your editor.
+- **Tell guests to switch off "Ask where to save each file before downloading"** in
+  Chrome (Settings > Downloads). The recording is written through a normal browser
+  download, so if that setting is on, Chrome interrupts them with a save dialog. No web
+  page can turn it off for them: it is a deliberate browser protection. With it off the
+  file lands in Downloads silently. One take produces exactly one file and one prompt.
 - **Chrome or Edge on a computer.** Safari and iOS recording is unreliable, and the
   panel will say *Cannot record* rather than pretending. Check this at the sound check,
   not at the top of the show: the **Re-check** button asks every guest to re-report.

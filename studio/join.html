@@ -250,7 +250,8 @@
 			<div class="step"><i class="las la-video"></i><span>Camera check</span></div>
 			<div class="step"><i class="las la-couch"></i><span>Waiting room</span></div>
 		</div>
-		<div id="paNote" class="small hidden" style="margin: -6px 0 18px 0; padding: 10px 14px; border: 1px solid rgba(var(--accent-rgb), 0.35); border-radius: var(--r-sm); background: var(--accent-soft); color: var(--accent); line-height: 1.5;"><i class="las la-headphones"></i> This show uses studio-quality audio. Please wear headphones to avoid echo.</div>
+		<div id="recNote" class="small" style="margin: -6px 0 18px 0; padding: 10px 14px; border: 1px solid var(--line); border-radius: var(--r-sm); background: rgba(255,255,255,0.03); color: var(--text-dim); line-height: 1.5;"><i class="las la-record-vinyl"></i> This show is recorded on your own computer for quality. Your browser may ask where to save the file; anywhere is fine, and you will send it to the producer afterwards.</div>
+			<div id="paNote" class="small hidden" style="margin: -6px 0 18px 0; padding: 10px 14px; border: 1px solid rgba(var(--accent-rgb), 0.35); border-radius: var(--r-sm); background: var(--accent-soft); color: var(--accent); line-height: 1.5;"><i class="las la-headphones"></i> This show uses studio-quality audio. Please wear headphones to avoid echo.</div>
 		<div class="field">
 			<label for="guestName">Your name (shown on screen)</label>
 			<input type="text" id="guestName" maxlength="40" placeholder="e.g. Jane Smith" autocomplete="name" />
@@ -767,7 +768,9 @@
 				} catch (e) {}
 				w.recordLocalVideoToggle(true); // startonly: never toggles OFF a running take
 				recOn = true; recStartedAt = Date.now();
-				showRecSaved("");
+				showRecSaved("Recording started on this computer. If your browser asks " +
+					"where to save the file, pick anywhere you will remember: you will send " +
+					"it to the producer afterwards.", 12000);
 				recReport("on");
 			} else if (!on && running) {
 				w.recordLocalVideoToggle();
@@ -792,13 +795,13 @@
 	}
 
 	let recSavedTimer = null;
-	function showRecSaved(text) {
+	function showRecSaved(text, ms) {
 		const el = $("recSaved");
 		clearTimeout(recSavedTimer);
 		if (!text) { el.classList.remove("show"); return; }
 		el.textContent = text;
 		el.classList.add("show");
-		recSavedTimer = setTimeout(() => el.classList.remove("show"), 15000);
+		recSavedTimer = setTimeout(() => el.classList.remove("show"), ms || 15000);
 	}
 
 	// tell the control room what actually happened, so its board shows truth

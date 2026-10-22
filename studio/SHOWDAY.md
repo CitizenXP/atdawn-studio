@@ -16,6 +16,9 @@ Control room: `https://citizenxp.github.io/atdawn-studio/studio/admin.html`
       - Use **Chrome or Edge on a computer**, not a phone, not Safari.
       - Wear **headphones**.
       - Keep **10 GB free**: your computer records the master copy.
+      - In Chrome, turn **off** Settings > Downloads > *Ask where to save each file
+        before downloading*. Otherwise Chrome stops to ask mid-show and the recording
+        waits on them. With it off the file drops straight into Downloads.
 - [ ] Install ffmpeg once, so converting the takes afterwards is instant:
       `winget install Gyan.FFmpeg`
 

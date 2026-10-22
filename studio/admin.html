@@ -1121,6 +1121,14 @@
 		sendCueTo(frameOf(inGreen ? 'green' : 'main'), sid, "⏺REC " + body);
 	}
 
+	// Stopping a single guest is an instruction about THAT guest: it must stick, even
+	// while the session stays armed for everyone else. Without this the armed loop
+	// restarted them seconds later and fired a second save dialog on their machine.
+	function setLocalRecOne(sid, on) {
+		if (on) delete recHold[sid]; else recHold[sid] = true;
+		setLocalRec(sid, on);
+	}
+
 	function setLocalRec(sid, on) {
 		recSend(sid, on ? "START " + recQ() : "STOP");
 		// never optimistically mark it on: wait for the guest to confirm
@@ -1134,13 +1142,18 @@
 	// ARMED means 'this session is being recorded', not 'these particular guests are'.
 	// It is the difference between losing a guest's second half because they refreshed,
 	// and not noticing because we started them again within a few seconds.
-	let recArmed = false;
+	// null = no instruction from this producer yet (fresh dashboard), true = armed,
+	// false = deliberately stopped. Only null may be overridden by what we observe:
+	// a stale 'on' report arriving just after Stop must not re-arm the session.
+	let recArmed = null;
+	const recHold = {}; // sid -> true when this guest was stopped on purpose
 	const recRetryAt = {}; // sid -> next time we may retry a guest that reported fail
 
 	function setLocalRecAll(on) {
 		const gs = allGuests();
 		if (on && !gs.length) { Studio.toast("No guests connected yet", true); return; }
 		recArmed = on;
+		gs.forEach(g => { delete recHold[g.sid]; }); // a blanket instruction clears holds
 		gs.forEach(g => setLocalRec(g.sid, on));
 		Studio.toast(on
 			? "Asked " + gs.length + " guest" + (gs.length > 1 ? "s" : "") + " to start recording locally"
@@ -1190,13 +1203,13 @@
 
 	function updateRecButton() {
 		const btn = $("recAllBtn");
-		const armedNow = recArmed || anyRecording();
+		const armedNow = recArmed === true || anyRecording();
 		btn.classList.toggle("armed", armedNow);
 		btn.classList.toggle("primary", !armedNow);
 		btn.innerHTML = armedNow
 			? '<i class="las la-stop-circle"></i> Stop recording everyone'
 			: '<i class="las la-dot-circle"></i> Start recording everyone';
-		$("recArmedNote").classList.toggle("hidden", !recArmed);
+		$("recArmedNote").classList.toggle("hidden", recArmed !== true);
 	}
 
 	// how long has this guest been rolling? first confirmed 'on' wins
@@ -1227,7 +1240,7 @@
 		const b = e.target.closest("[data-recact]");
 		if (!b) return;
 		const sid = b.closest(".recRow").dataset.sid;
-		setLocalRec(sid, b.dataset.recact === "start");
+		setLocalRecOne(sid, b.dataset.recact === "start");
 	});
 
 	// A guest that goes quiet is not a guest that is still recording. Re-ping so a
@@ -1248,10 +1261,11 @@
 		});
 		// while armed, anyone not rolling gets started again: late joiners, and
 		// guests whose recording died when they refreshed or lost the tab
-		if (recArmed) {
+		if (recArmed === true) {
 			gs.forEach(g => {
 				const st = LOCALREC[g.sid];
 				if (st === "on") return;
+				if (recHold[g.sid]) return; // stopped on purpose; leave them alone
 				// a guest that genuinely cannot record must not be spammed; back off
 				if (st === "fail" && recRetryAt[g.sid] && now < recRetryAt[g.sid]) return;
 				if (st === "fail") recRetryAt[g.sid] = now + 60000;
@@ -1372,7 +1386,7 @@
 				// particular dashboard did not start it. Reopening the control room mid-show
 				// would otherwise come back disarmed, quietly dropping the protection that
 				// restarts a guest who refreshes. Adopt the state we actually observe.
-				if (LOCALREC[g.sid] === "on" && !recArmed) recArmed = true;
+				if (LOCALREC[g.sid] === "on" && recArmed === null) recArmed = true;
 				LOCALRECWHY[g.sid] = (stat[2] || "").trim();
 				LOCALRECSEEN[g.sid] = Date.now();
 				renderRecList();
@@ -1736,7 +1750,7 @@
 		const frame = inGreen ? $("dirGreen") : $("dirMain");
 		const act = btn.dataset.act;
 
-		if (act === "lrec") { setLocalRec(sid, LOCALREC[sid] !== "on"); return; }
+		if (act === "lrec") { setLocalRecOne(sid, LOCALREC[sid] !== "on"); return; }
 		if (act === "admit") {
 			clickDirectorButton(frame, sid, "remove-queue");
 			Studio.toast("Guest admitted to the green room");
