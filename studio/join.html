@@ -40,7 +40,7 @@
 	   have to hunt for, and the bar is above the video so it covers nobody's face. */
 	#statusPill { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); }
 	#statusPill.live { box-shadow: 0 0 22px rgba(255, 87, 87, 0.3); }
-	#stage { flex: 1; position: relative; min-height: 0; background: #000; }
+	#stage { flex: 1; position: relative; min-height: 0; background: #000; overflow: hidden; }
 	#stage iframe { position: absolute; inset: 0; width: 100%; height: 100%; }
 
 	#waitOverlay {
@@ -145,6 +145,12 @@
 		font-size: 3rem; font-weight: 800; letter-spacing: 0.08em;
 		color: #fff; text-shadow: 0 4px 40px rgba(0, 0, 0, 0.65);
 	}
+	/* Until the guest presses START they are not connected to anything: the dock
+	   would drive nothing and chat could neither send nor receive. Hiding both keeps
+	   VDO's device picker (including Audio Output Destination) fully visible. */
+	#call.prestart #controls,
+	#call.prestart #chatPanel { display: none; }
+
 	/* ----- local recording indicator ----- */
 	#recPill {
 		display: none; align-items: center; gap: 8px;
@@ -517,6 +523,7 @@
 
 		$("lobby").classList.add("hidden");
 		$("call").classList.remove("hidden");
+		$("call").classList.add("prestart"); // dock and chat appear once they press START
 		setPill("waiting", "CONNECTING", "Choose your camera & mic, then press START");
 		state = "connecting";
 		pollTimer = setInterval(pollState, 1200);
@@ -628,6 +635,10 @@
 		let s = null;
 		try { s = iframe.contentWindow && iframe.contentWindow.session; } catch (e) { return; } // cross-origin: rely on events only
 		if (!s) return;
+		// Measured, not assumed: session.streamSrc is already true while VDO is merely
+		// PREVIEWING the camera on the device-check screen, so it cannot mean 'started'.
+		// session.seeding is the field that actually flips when the guest presses START.
+		if (s.seeding || started) revealCallChrome(); // belt and braces if the event is missed
 		neutralizeDirectorTiles(); // fallback in case the observer missed the tile's creation
 		blockVideoMenu();          // no-op once bound; covers a late or re-navigated frame
 		try {
@@ -655,6 +666,7 @@
 		if (d.action === "started-camera" || d.action === "camera-share" || d.action === "joined-room-complete") {
 			if (!started) {
 				started = true;
+				revealCallChrome();
 				Studio.send(iframe, { style: CHROME_HIDE_CSS }); // re-assert in case the load-time injection was too early
 				applyState("waiting"); // will immediately correct to green/live on next poll if not held
 				pollState();
@@ -897,6 +909,16 @@
 	$("chatClose").addEventListener("click", () => setChatOpen(false));
 	$("chatSend").addEventListener("click", sendChatText);
 	$("chatText").addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); sendChatText(); } });
+
+	// Show the dock and chat. Called when VDO reports the guest is publishing, and
+	// again from pollState if that event was ever missed: being stuck with no mic
+	// button for a whole show is far worse than showing the dock a moment early.
+	function revealCallChrome() {
+		const call = $("call");
+		if (!call.classList.contains("prestart")) return;
+		call.classList.remove("prestart");
+		setChatOpen(false); // start closed, with the dock un-shifted
+	}
 
 	/* ---------- controls ---------- */
 	function setIcon(btnId, cls) {
