@@ -181,6 +181,34 @@ never re-encoded, so nothing is lost.
 - Closing the tab mid-recording now warns the guest first, but it will still truncate
   the take if they insist.
 
+## Playing a video to the room and the stream
+
+**Overview → Play a video to the room → Open media player** opens a tab that joins the
+broadcast room as an extra source. Pick a file there and it plays to every guest on air
+and into OBS from the same source, so guest reactions line up with what the audience
+sees. There is a second button that copies an **OBS link for the clip alone**, for a
+full-screen cut; add it as a browser source before the show and it lights up when a clip
+plays. Closing the tab removes the clip from the guests and from OBS.
+
+Two things to know:
+
+- **Keep the media tab visible while a clip plays.** Chrome throttles background tabs and
+  the playback stalls if you bury it behind the control room. Put it on a second screen.
+- The file never leaves your computer: it is streamed into the room like a camera, not
+  uploaded anywhere.
+
+## Handing recordings back at the end
+
+Set an **Upload link** in Settings before the show. A Dropbox File Request works best,
+because guests can upload without an account; a Google Drive folder usually forces them
+to sign in.
+
+When you press **Stop recording everyone**, each guest gets a note telling them the file
+is in their Downloads folder, plus an **Upload your recording** button pointing at that
+link. It stays on screen rather than timing out, because this is the last thing they need
+to do and the only step with no undo. **Send upload link** in the recordings panel shows
+it again to anyone who missed it.
+
 ## Guest Links: permanent, preloadable links (Guest Links tab)
 
 For repeat events you can build everything **before** show day instead of copying links

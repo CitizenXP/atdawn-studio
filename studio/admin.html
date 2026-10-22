@@ -445,6 +445,18 @@
 				<div id="monitorStrip"><div class="emptyNote">Guests' live video appears here the moment they connect, so there's no need to open a room tab.</div></div>
 			</div>
 
+			<div id="mediaSection" style="margin-top:26px; max-width:1240px">
+				<h3 class="recHead"><i class="las la-film"></i> Play a video to the room <span class="monHint" style="text-transform:none;letter-spacing:0">guests and the stream see it from one source</span></h3>
+				<div class="recCard">
+					<div class="recTop">
+						<button class="btn primary" id="mediaOpen"><i class="las la-folder-open"></i> Open media player</button>
+						<button class="btn sm" id="mediaCopyObs"><i class="las la-copy"></i> Copy OBS link for the clip</button>
+						<div class="spacer"></div>
+					</div>
+					<p class="recNote" style="margin-top:0"><b>Open media player</b> opens a tab that joins the broadcast room as an extra source. Pick a video file there and it plays to every guest on air and into OBS at the same time, so reactions line up with what the audience sees. Close the tab when the clip is done. The OBS link above is that clip on its own: add it as a browser source now and cut to it full screen when you play something. Keep the file on this computer; it is not uploaded anywhere.</p>
+				</div>
+			</div>
+
 			<div id="recSection">
 				<h3 class="recHead"><i class="las la-record-vinyl"></i> Studio recordings <span class="cnt" id="cntRec">0</span> <span class="monHint" style="text-transform:none;letter-spacing:0">full quality, recorded on each guest's own computer</span></h3>
 				<div class="recCard">
@@ -458,6 +470,7 @@
 						</select>
 						<div class="spacer"></div>
 						<span id="recArmedNote" class="hidden" style="font-size:0.74rem;color:var(--live);font-weight:700;letter-spacing:0.05em">ARMED · late joiners start automatically</span>
+						<button class="btn sm" id="recSendUpload" title="Show every guest the upload link again"><i class="las la-cloud-upload-alt"></i> Send upload link</button>
 						<button class="btn sm" id="recRefresh" title="Ask every guest to re-report whether they are actually recording"><i class="las la-sync"></i> Re-check</button>
 					</div>
 					<div class="recList" id="recList"><div class="emptyNote">No guests connected yet.</div></div>
@@ -571,6 +584,8 @@
 				</div>
 				<div class="card">
 					<h3><i class="las la-photo-video"></i> Broadcast &amp; recording</h3>
+					<div class="field"><label>Upload link for guests (where they send their recordings)</label><input type="text" id="setUploadUrl" placeholder="e.g. a Dropbox File Request or Drive folder link" /></div>
+					<p class="small muted" style="line-height:1.6; margin:-8px 0 16px 0">Shown to each guest the moment their recording stops, as a button they can click. A <b>Dropbox File Request</b> works best: guests can upload without an account. Google Drive folders usually force them to sign in.</p>
 					<div class="field"><label>Standby message (shown in OBS when no one is live)</label><input type="text" id="setWaitMsg" placeholder="e.g. Starting soon" /></div>
 					<div class="field"><label>Standby image URL (optional, https)</label><input type="text" id="setWaitImg" placeholder="https://…/starting-soon.png" /></div>
 					<div class="field"><label>Recording quality (manual &amp; auto-record)</label>
@@ -716,6 +731,7 @@
 		$("tallyChk").checked = EV.tally !== false;
 		$("dcChk").checked = !!EV.dirChat;
 		$("ccChk").checked = !!EV.captions;
+		$("setUploadUrl").value = EV.uploadUrl || "";
 		$("setWaitMsg").value = EV.waitMsg || "";
 		$("setWaitImg").value = EV.waitImg || "";
 		$("setRecMode").value = String(EV.recMode);
@@ -946,6 +962,11 @@
 			Studio.toast("Saved. Re-copy the guest & OBS links to apply");
 		});
 	});
+	$("setUploadUrl").addEventListener("change", () => {
+		EV.uploadUrl = $("setUploadUrl").value.trim();
+		saveEvent();
+		Studio.toast(EV.uploadUrl ? "Guests will get this link when recording stops" : "Upload link cleared");
+	});
 	$("setWaitMsg").addEventListener("change", () => {
 		EV.waitMsg = $("setWaitMsg").value.trim();
 		saveEvent();
@@ -1114,6 +1135,22 @@
 	const LOCALRECWHY = {};   // sid -> reason, when fail
 	const LOCALRECSEEN = {};  // sid -> timestamp of last report
 
+	// A media source joins the broadcast room like any other publisher, so one file
+	// reaches the guests and OBS together. A fixed push id means the OBS source can be
+	// set up before the show and simply lights up when a clip plays.
+	function mediaSid() { return "clip_" + EV.main; }
+	function mediaPlayerUrl() {
+		return Studio.buildUrl(Studio.vdoBase(), {
+			room: EV.main,
+			password: EV.pwd || false,
+			push: mediaSid(),
+			fileshare: null,
+			label: "Clip",
+			hidetranslate: null,
+			tips: 0
+		});
+	}
+
 	function recQ() { return parseInt($('recQuality').value, 10); }
 
 	function recSend(sid, body) {
@@ -1130,7 +1167,10 @@
 	}
 
 	function setLocalRec(sid, on) {
-		recSend(sid, on ? "START " + recQ() : "STOP");
+		// the upload link rides along with START so the guest already has it when they
+		// stop, however the recording ends
+		const up = (EV.uploadUrl || "").trim().replace(/\s+/g, "");
+		recSend(sid, on ? ("START " + recQ() + (up ? " " + up : "")) : "STOP");
 		// never optimistically mark it on: wait for the guest to confirm
 		if (!on) LOCALREC[sid] = "off";
 		setTimeout(renderRecList, 400);
@@ -1234,8 +1274,25 @@
 	// keep the elapsed counters ticking without waiting for a status report
 	setInterval(function () { if (anyRecording()) renderRecList(); }, 1000);
 
+	$("mediaOpen").addEventListener("click", () => {
+		window.open(mediaPlayerUrl(), "_blank", "noopener");
+		Studio.toast("Pick a video file in the new tab to play it to the room");
+	});
+	$("mediaCopyObs").addEventListener("click", async () => {
+		const ok = await Studio.copyText(soloLink(mediaSid(), EV.main));
+		Studio.toast(ok ? "OBS link for the clip copied. Add it as a browser source now." : "Copy failed", !ok);
+	});
+
 	$("recAllBtn").addEventListener("click", () => setLocalRecAll(!anyRecording()));
 	$("recRefresh").addEventListener("click", () => { recPingAll(); Studio.toast("Asked every guest to re-report"); });
+	$("recSendUpload").addEventListener("click", () => {
+		const up = (EV.uploadUrl || "").trim().replace(/\s+/g, "");
+		if (!up) { Studio.toast("Set an upload link in Settings first", true); return; }
+		const gs = allGuests();
+		if (!gs.length) { Studio.toast("No guests connected", true); return; }
+		gs.forEach(g => recSend(g.sid, "UPLOAD " + up));
+		Studio.toast("Upload link shown to " + gs.length + " guest" + (gs.length > 1 ? "s" : ""));
+	});
 	$("recList").addEventListener("click", e => {
 		const b = e.target.closest("[data-recact]");
 		if (!b) return;

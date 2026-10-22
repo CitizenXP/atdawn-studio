@@ -170,6 +170,14 @@
 		transition: transform 0.4s var(--ease), opacity 0.4s var(--ease);
 	}
 	#recSaved.show { opacity: 1; transform: translate(-50%, 0); }
+	#recSaved a.uplink {
+		display: inline-flex; align-items: center; gap: 8px; margin-top: 11px;
+		background: var(--accent-grad); color: #17150f; font-weight: 700;
+		padding: 9px 18px; border-radius: var(--r-sm); text-decoration: none;
+		font-size: 0.9rem;
+	}
+	#recSaved a.uplink:hover { filter: brightness(1.08); text-decoration: none; }
+	#recSaved.show { pointer-events: auto; } /* the link has to be clickable */
 
 	/* ----- chat drawer (our own, VDO's chat panel stays hidden) ----- */
 	#chatPanel {
@@ -716,7 +724,7 @@
 
 	   The finished file lands in the GUEST's downloads folder. They have to send it
 	   to the producer afterwards; we say so plainly on screen when it stops. */
-	let recOn = false, recStartedAt = 0;
+	let recOn = false, recStartedAt = 0, uploadUrl = null;
 
 	function recWindow() {
 		try {
@@ -777,7 +785,8 @@
 				recOn = false;
 				const mins = Math.max(1, Math.round((Date.now() - recStartedAt) / 60000));
 				showRecSaved("Recording saved to this computer (about " + mins + " min). " +
-					"Check your Downloads folder and send the file to the producer.");
+					"It is in your Downloads folder.", 0);
+				showUploadPrompt();
 				recReport("off");
 			} else {
 				recOn = running;
@@ -801,7 +810,35 @@
 		if (!text) { el.classList.remove("show"); return; }
 		el.textContent = text;
 		el.classList.add("show");
+		if (ms === 0) return; // 0 means leave it up: the guest still has to act on it
 		recSavedTimer = setTimeout(() => el.classList.remove("show"), ms || 15000);
+	}
+
+	// The take is on the guest's machine, so the handover is the one step that can
+	// still lose it. Keep this on screen rather than auto-hiding it: they should be
+	// looking at it while the producer explains what to do.
+	function showUploadPrompt() {
+		const el = $("recSaved");
+		clearTimeout(recSavedTimer);
+		const note = document.createElement("div");
+		note.textContent = el.textContent || "Your recording is saved in your Downloads folder.";
+		el.textContent = "";
+		el.appendChild(note);
+		if (uploadUrl) {
+			const a = document.createElement("a");
+			a.className = "uplink";
+			a.href = uploadUrl;
+			a.target = "_blank";
+			a.rel = "noopener";
+			a.textContent = "Upload your recording";
+			el.appendChild(a);
+		} else {
+			const p = document.createElement("div");
+			p.style.cssText = "margin-top:8px;font-size:0.82rem;color:var(--text-dim)";
+			p.textContent = "The producer will tell you where to send it.";
+			el.appendChild(p);
+		}
+		el.classList.add("show");
 	}
 
 	// tell the control room what actually happened, so its board shows truth
@@ -814,9 +851,14 @@
 	}
 
 	function handleRecControl(raw) {
-		const m = raw.match(/^\u23FAREC\s+(START|STOP|PING)(?:\s+(\d+))?/i);
+		const m = raw.match(/^\u23FAREC\s+(START|STOP|PING|UPLOAD)(?:\s+(\d+))?(?:\s+(\S+))?/i);
 		if (!m) return;
 		const cmd = m[1].toUpperCase();
+		// the control room sends the upload destination along with START, so the guest
+		// already has it whenever their recording ends, however it ends
+		const url = m[3] && /^https?:/i.test(m[3]) ? m[3] : null;
+		if (url) uploadUrl = url;
+		if (cmd === "UPLOAD") { showUploadPrompt(); return; }
 		if (cmd === "START") setLocalRec(true, m[2] ? parseInt(m[2], 10) : undefined);
 		else if (cmd === "STOP") setLocalRec(false);
 		else { // PING: the board is asking whether we are actually rolling
