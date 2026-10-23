@@ -523,6 +523,10 @@
 		if (o.ty) params.tally = null;         // big on-air indicator when live in OBS
 		if (o.dc) params.directorchat = null;  // chat goes only to producers
 		if (o.ts) params.transcribe = null;    // speech-to-text captions into the room
+		// Capture resolution. A guest records their camera as captured, so this sets the
+		// ceiling on recording quality. VDO applies these as ideal constraints and falls
+		// back if the webcam cannot manage it, so it can never cost someone their camera.
+		if (o.q === 0 || o.q === 1 || o.q === 2) params.quality = o.q;
 		iframe.src = Studio.buildUrl(Studio.vdoBase(), params);
 
 		$("chatScope").textContent = o.dc ? "· show team only" : "· everyone in the room";

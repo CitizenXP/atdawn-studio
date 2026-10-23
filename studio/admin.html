@@ -608,6 +608,14 @@
 				</div>
 				<div class="card">
 					<h3><i class="las la-photo-video"></i> Broadcast &amp; recording</h3>
+					<div class="field"><label>Guest camera quality (decides how good the recordings can be)</label>
+						<select id="setCamQuality">
+							<option value="1">720p: recommended for podcasts</option>
+							<option value="0">1080p: best masters, hardest on older laptops</option>
+							<option value="">Auto: let each computer decide</option>
+						</select>
+					</div>
+					<p class="small muted" style="line-height:1.6; margin:-8px 0 16px 0">A guest records their camera exactly as it was captured, so this is the ceiling on your masters. <b>Auto</b> lets VDO.Ninja guess from the guest's hardware, and on an older laptop that guess can be as low as 320x180. Re-copy the guest links after changing this.</p>
 					<div class="field"><label>Upload link for guests (where they send their recordings)</label><input type="text" id="setUploadUrl" placeholder="e.g. a Dropbox File Request or Drive folder link" /></div>
 					<p class="small muted" style="line-height:1.6; margin:-8px 0 16px 0">Shown to each guest the moment their recording stops, as a button they can click. A <b>Dropbox File Request</b> works best: guests can upload without an account. Google Drive folders usually force them to sign in.</p>
 					<div class="field"><label>Standby message (shown in OBS when no one is live)</label><input type="text" id="setWaitMsg" placeholder="e.g. Starting soon" /></div>
@@ -769,6 +777,7 @@
 		$("tallyChk").checked = EV.tally !== false;
 		$("dcChk").checked = !!EV.dirChat;
 		$("ccChk").checked = !!EV.captions;
+		$("setCamQuality").value = EV.camQuality === undefined ? "1" : String(EV.camQuality);
 		$("setUploadUrl").value = EV.uploadUrl || "";
 		if (EV.audioOut) { const o = document.createElement("option"); o.value = EV.audioOut; o.textContent = "Saved device"; $("audioOut").appendChild(o); $("audioOut").value = EV.audioOut; }
 		$("setWaitMsg").value = EV.waitMsg || "";
@@ -863,6 +872,8 @@
 		if (EV.tally !== false) o.ty = 1;
 		if (EV.dirChat) o.dc = 1;
 		if (EV.captions) o.ts = 1;
+		const cq = EV.camQuality === undefined ? 1 : EV.camQuality;
+		if (cq === 0 || cq === 1 || cq === 2) o.q = cq;
 		if (Object.keys(o).length) payload.o = o;
 		if (extra) Object.assign(payload, extra); // e.g. { sid, gn } for a personal invite
 		return new URL("join.html?e=" + Studio.b64uEncode(payload), location.href).href;
@@ -877,7 +888,7 @@
 			name: EV.name, green: EV.green, main: EV.main, pwd: EV.pwd, ask: !!EV.ask,
 			tally: EV.tally, recMode: EV.recMode, uploadUrl: EV.uploadUrl || "",
 			labels: !!EV.labels, noiseGate: !!EV.noiseGate, proAudio: !!EV.proAudio,
-			dirChat: !!EV.dirChat, captions: !!EV.captions,
+			dirChat: !!EV.dirChat, captions: !!EV.captions, camQuality: EV.camQuality,
 			waitMsg: EV.waitMsg || "", waitImg: EV.waitImg || ""
 		};
 		return new URL("admin.html?e=" + Studio.b64uEncode(share), location.href).href;
@@ -1014,6 +1025,12 @@
 			saveEvent();
 			Studio.toast("Saved. Re-copy the guest & OBS links to apply");
 		});
+	});
+	$("setCamQuality").addEventListener("change", () => {
+		const v = $("setCamQuality").value;
+		EV.camQuality = v === "" ? "" : parseInt(v, 10);
+		saveEvent();
+		Studio.toast("Saved. Re-copy the guest links so it takes effect");
 	});
 	$("setUploadUrl").addEventListener("change", () => {
 		EV.uploadUrl = $("setUploadUrl").value.trim();

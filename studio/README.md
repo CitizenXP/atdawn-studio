@@ -160,6 +160,21 @@ one. It needs ffmpeg (`winget install Gyan.FFmpeg`). The audio
 is converted from Opus to AAC because editors refuse Opus inside an MP4; the video is
 never re-encoded, so nothing is lost.
 
+### Recording quality is set by the CAMERA, not the bitrate
+
+A guest records their camera exactly as it was captured, so capture resolution is the
+ceiling on your masters. Left to itself, VDO.Ninja picks that resolution from a guess
+about the guest's hardware, and on an older laptop that guess can be as low as 320x180:
+no recording bitrate will rescue it.
+
+**Guest camera quality** in Settings removes the guess. 720p is the sensible default for
+a podcast; 1080p gives the best masters but works the guest's machine hardest. It is
+applied as a preference, so a webcam that cannot manage it falls back instead of failing,
+and nobody ever loses their camera over it. Re-copy the guest links after changing it.
+
+Check it at the sound check: the resolution a guest is actually capturing is what you
+will be editing.
+
 ### Things worth knowing before you rely on this
 
 - **The files are on your guests' machines.** There is no server here to upload them
